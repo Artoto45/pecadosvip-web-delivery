@@ -9,9 +9,9 @@
     "dev": "vinext dev",
     "build": "vinext build",
     "start": "vinext start",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next --ignore-pattern output --ignore-pattern .playwright-cli",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test tests/analytics.test.ts tests/content-contract.test.ts tests/lifecycle.test.ts tests/public-profiles.test.ts tests/release-gates.test.ts tests/repository.test.ts tests/seo-safety.test.ts",
+    "test": "node --experimental-strip-types --test tests/analytics.test.ts tests/contact-config.test.ts tests/content-contract.test.ts tests/favicon-route.test.ts tests/lifecycle.test.ts tests/public-legal.test.ts tests/public-profiles.test.ts tests/release-gates.test.ts tests/repository.test.ts tests/runtime-publication.test.ts tests/seo-safety.test.ts",
     "validate": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build"
   },
   "dependencies": {

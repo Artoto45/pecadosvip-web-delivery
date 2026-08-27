@@ -28,39 +28,39 @@ Restricciones verificadas:
 
 | Ruta | Propósito | Estado actual |
 |---|---|---|
-| `/` | Portada general | Parcial; redirige a Madrid |
-| `/madrid` | Landing Madrid | Implementada, noindex por defecto |
-| `/barcelona` | Landing Barcelona | Implementada, noindex por defecto |
+| `/` | Portada general | Borrador implementado; producción bloqueada muestra holding neutral |
+| `/madrid` | Landing Madrid | Borrador implementado; producción bloqueada muestra holding neutral |
+| `/barcelona` | Landing Barcelona | Borrador implementado; producción bloqueada muestra holding neutral |
 | `/girona` | Landing local | Bloqueada por contenido y cobertura |
 | `/tarragona` | Landing local | Bloqueada por contenido y cobertura |
 | `/toledo` | Landing local | Bloqueada por contenido y cobertura |
 | `/guadalajara` | Landing local | Bloqueada por contenido y cobertura |
 | `/segovia` | Landing local | Bloqueada por contenido y cobertura |
-| `/perfiles` | Listado, filtros y paginación | Consulta de dominio implementada; UI no implementada |
-| `/perfiles/{slug}` | Detalle de perfil | Proyección pública implementada; UI no implementada |
-| `/contacto` | Contacto o reserva privada | No implementada como ruta |
-| `/legal/aviso-legal` | Aviso legal | Bloqueada por texto y aprobación |
-| `/legal/privacidad` | Privacidad | Bloqueada por texto y aprobación |
-| `/legal/cookies` | Cookies | Bloqueada por texto y aprobación |
-| `/legal/terminos-del-servicio` | Condiciones | Bloqueada por texto y aprobación |
+| `/perfiles` | Listado y filtros GET | UI integrada en código; el runtime actual muestra holding mientras el release está bloqueado y no dispone de preview operativo |
+| `/perfiles/{slug}` | Detalle de perfil | UI integrada; holding mientras el release esté bloqueado y 404 sin perfil publicable después |
+| `/contacto` | Contacto o reserva privada | UI integrada sin POST; holding y canales cerrados por el gate agregado |
+| `/legal/aviso-legal` | Aviso legal | Ruta implementada; 404 hasta documento y release aprobados |
+| `/legal/privacidad` | Privacidad | Ruta implementada; 404 hasta documento y release aprobados |
+| `/legal/cookies` | Cookies | Ruta implementada; 404 hasta documento y release aprobados |
+| `/legal/terminos-del-servicio` | Condiciones | Ruta implementada; 404 hasta documento y release aprobados |
 | `/robots.txt` | Política para crawlers | Implementada; bloquea todo por defecto |
 | `/sitemap.xml` | URLs indexables | Implementada; vacía por defecto |
 | `/admin/*` | CMS administrativo | Puerto futuro; UI y auth no implementados |
 | `/preview/*` | Vista previa no pública | Puerto futuro; no implementado |
 | `/api/*` | Adaptadores del CMS | Puerto futuro; no implementado |
 
-El manifiesto contractual contiene home, ciudades, perfiles, contacto y legales. Todas las rutas quedan no indexables si falla el gate agregado. El build real todavía solo expone `/`, `/madrid` y `/barcelona`.
+El manifiesto contractual contiene home, ciudades, perfiles, contacto y legales. Todas las rutas quedan no indexables si falla el gate agregado. El build expone las familias implementadas, pero el boundary de producción sustituye todo el contenido por un holding neutral mientras el gate falle; las legales permanecen 404. El intento de preview bajo el runtime real de desarrollo de Vinext también mostró el holding, por lo que no se considera operativo.
 
 ## Puertos y adaptadores
 
 | Puerto lógico | Dirección | Implementación actual | Integración pendiente |
 |---|---|---|---|
-| `PublicProfileQuery` | Sitio → contenido publicado | Parser URL estricto, filtros, paginación y detalle seguro en memoria | Route handler, repositorio persistente y UI |
+| `PublicProfileQuery` | Sitio → contenido publicado | Parser URL estricto, filtros GET, paginación, UI y detalle seguro | Repositorio persistente y contenido aprobado |
 | `ProfileRepository` | CMS → perfiles y bitácora | `InMemoryProfileRepository` | Base de datos transaccional |
 | `IdentityContext` | Operador → rol | El llamador entrega actor opaco | Sesión autenticada y rol server-side |
 | `Clock` | Repositorio → tiempo | Función inyectable | Reloj de infraestructura |
 | `MediaStorage` | CMS → fotos y videos | Modelo, derechos y orden | Upload, storage, variantes y CDN |
-| `ContactDestination` | Navegador → canal | Variables vacías y validación de esquema | URLs y endpoint aprobados |
+| `ContactDestination` | Navegador → canal | Variables vacías, esquemas seguros y triple gate: release agregado + contacto + privacidad | URLs/endpoints y documentos aprobados |
 | `AnalyticsConsent` | Navegador → analítica | Gate y allowlist runtime de eventos/propiedades | CMP, proveedor y configuración aprobados |
 | `SearchPublication` | Sitio → crawlers | SEO fail-closed | Dominio, contenido e indexación aprobados |
 | `ReleaseDeployment` | Build → hosting | Build local y PR borrador | Hosting y despliegue autorizados |
@@ -81,7 +81,7 @@ Los canales previstos son Telegram o WhatsApp por HTTPS, teléfono `tel:`, corre
 
 Implementado y verificado localmente:
 
-- Madrid, Barcelona y redirección inicial.
+- Portada, Madrid, Barcelona, listado de perfiles, detalle seguro y contacto sin POST.
 - Contratos tipados de contenido y evidencia.
 - Estados, roles runtime, duplicado seguro, archivo/restauración y disponibilidad.
 - Revisión optimista, protección contra replay y auditoría local.
@@ -89,16 +89,16 @@ Implementado y verificado localmente:
 - Consulta pública de perfiles con parser URL fail-closed, filtros, paginación, detalle y proyección sin metadatos internos.
 - Contrato de eventos de analítica deshabilitado sin consentimiento y sin propiedades personales.
 - SEO cerrado por defecto.
-- Pruebas de contrato y build local.
+- Puerta final del checkpoint con 65 pruebas de contrato/regresión, build local y smoke de producción fail-closed; la evidencia Chromium del UI de borrador es pre-boundary y no prueba el artefacto final.
 
 Parcial o bloqueado:
 
-- Portada definitiva, ciudades restantes, UI de perfiles, contacto y legales.
-- CMS sin código, preview y administración.
+- Portada definitiva, ciudades restantes y rutas/textos legales.
+- CMS sin código, preview operativo y administración.
 - Autenticación, base de datos, almacenamiento, upload y optimización multimedia.
 - Contenido real y evidencia de edad, consentimiento y derechos.
 - Cobertura y keywords, dominio, canales, analítica y textos legales.
-- Diseño aprobado, QA visual/E2E, accesibilidad y UAT.
+- Diseño aprobado, QA visual contra mockup, auditoría WCAG completa, E2E desplegado y UAT.
 - Merge, hosting y despliegue.
 
 La clasificación de rutas y los límites de la referencia competitiva se detallan en `REFERENCE_RESEARCH.md`; la medición condicionada a consentimiento se define en `MEASUREMENT_SPEC.md`.

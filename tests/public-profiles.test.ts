@@ -84,6 +84,19 @@ test('URL search parameters parse only one canonical value per supported key', (
   });
 });
 
+test('browser GET forms may submit unused filters as empty values', () => {
+  const result = parsePublicProfileSearchParams(
+    new URLSearchParams(
+      'city=madrid&availability=&minAge=&maxAge=&service=&page=&pageSize=',
+    ),
+  );
+
+  assert.deepEqual(result, {
+    ok: true,
+    query: { city: 'madrid' },
+  });
+});
+
 test('URL search parameters reject duplicates, unknown keys and ambiguous integers', () => {
   const rejected = [
     'city=madrid&city=barcelona',

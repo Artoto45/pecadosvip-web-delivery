@@ -1,0 +1,296 @@
+{
+  "audit_id": "A-PECADOSVIP-20260827",
+  "catalog_version": "2026.08.26",
+  "universe_definition": "The 46 controls in the auditar-web-ue-espana control catalog. Project-specific age, image-rights and sector-advertising findings are reported separately and are not added to this catalog denominator.",
+  "classification_rule": "Each catalog control appears exactly once. EXECUTED means that at least a scoped applicability or technical review was performed and a result could be stated, including PARTIAL or INCONCLUSIVE. NOT_TESTED means that the control was selected but the required runtime, procedure, tool or human test was unavailable. NOT_APPLICABLE_CURRENT_SNAPSHOT is a reversible snapshot classification with an explicit reopen trigger. NOT_SELECTED means no substantive control execution and no exclusion conclusion.",
+  "counts": {
+    "universe": 46,
+    "sample": 20,
+    "executed": 14,
+    "not_tested": 6,
+    "not_applicable_current_snapshot": 16,
+    "not_selected": 10
+  },
+  "controls": [
+    {
+      "control_id": "GOV-APPLICABILITY-001",
+      "classification": "EXECUTED",
+      "result": "INCONCLUSIVE",
+      "method": "Profile, deterministic resolver, applicability matrix and counter-assumptions.",
+      "evidence": ["compliance/ue-es/profile.json", "compliance/ue-es/resolver-output.json", "compliance/ue-es/applicability-matrix.md", "compliance/ue-es/findings/F-3f2f2e51be65edb1.json"]
+    },
+    {
+      "control_id": "GOV-SOURCE-FRESHNESS-001",
+      "classification": "EXECUTED",
+      "result": "PARTIAL",
+      "method": "Catalog validation, official-source references and recorded verification dates; regional inventory remains pending.",
+      "evidence": ["compliance/ue-es/audit.json", "compliance/ue-es/audit-report.md"]
+    },
+    {
+      "control_id": "A11Y-EAA-SERVICE-001",
+      "classification": "EXECUTED",
+      "result": "INCONCLUSIVE",
+      "method": "Scope review for covered service, consumer context, microenterprise exception and transition facts.",
+      "evidence": ["compliance/ue-es/profile.json", "compliance/ue-es/applicability-matrix.md"]
+    },
+    {
+      "control_id": "A11Y-WCAG22-BASELINE-001",
+      "classification": "EXECUTED",
+      "result": "PARTIAL",
+      "method": "Local Chromium keyboard and responsive smoke on the draft UI; no complete conformance audit.",
+      "evidence": ["output/playwright/qa-results.json", "compliance/ue-es/findings/F-7e8fcbac30938098.json"]
+    },
+    {
+      "control_id": "PRIV-RGPD-BASES-001",
+      "classification": "EXECUTED",
+      "result": "PARTIAL",
+      "method": "Data-model, release-gate and client-input review; controller, bases and operations remain unresolved.",
+      "evidence": ["lib/content/types.ts", "compliance/ue-es/findings/F-1b1707ba34e2e4e1.json"]
+    },
+    {
+      "control_id": "CONS-PRECONTRACT-001",
+      "classification": "EXECUTED",
+      "result": "INCONCLUSIVE",
+      "method": "Client-document, architecture and fail-closed contact-flow review.",
+      "evidence": ["ARCHITECTURE.md", "app/contacto/page.tsx", "compliance/ue-es/findings/F-2f8825c8118094bd.json"]
+    },
+    {
+      "control_id": "CONS-CUSTOMER-SERVICE-001",
+      "classification": "EXECUTED",
+      "result": "INCONCLUSIVE",
+      "method": "Static review of the disabled contact route and absent approved service process.",
+      "evidence": ["app/contacto/page.tsx", "LEGAL_INPUTS_REQUIRED.md"]
+    },
+    {
+      "control_id": "CONS-ADR-001",
+      "classification": "EXECUTED",
+      "result": "INCONCLUSIVE",
+      "method": "Desk review of missing operator, complaint and dispute-resolution facts; no obligation is inferred.",
+      "evidence": ["LEGAL_INPUTS_REQUIRED.md", "compliance/ue-es/applicability-matrix.md"]
+    },
+    {
+      "control_id": "PLAT-DSA-NOTICE-001",
+      "classification": "EXECUTED",
+      "result": "INCONCLUSIVE",
+      "method": "Applicability review only; third-party/intermediary role remains unknown.",
+      "evidence": ["compliance/ue-es/profile.json", "compliance/ue-es/resolver-output.json", "compliance/ue-es/applicability-matrix.md"]
+    },
+    {
+      "control_id": "PLAT-DSA-MARKETPLACE-001",
+      "classification": "EXECUTED",
+      "result": "INCONCLUSIVE",
+      "method": "Applicability review only; the snapshot has no marketplace, while the future profile role is unresolved.",
+      "evidence": ["compliance/ue-es/profile.json", "compliance/ue-es/applicability-matrix.md"]
+    },
+    {
+      "control_id": "PLAT-P2B-RANKING-001",
+      "classification": "EXECUTED",
+      "result": "INCONCLUSIVE",
+      "method": "Applicability review only; no ranking/intermediation role is observed and the future business-user role is unresolved.",
+      "evidence": ["compliance/ue-es/applicability-matrix.md"]
+    },
+    {
+      "control_id": "SEC-RGPD-DESIGN-001",
+      "classification": "EXECUTED",
+      "result": "PARTIAL",
+      "method": "Static review and tests of fail-closed publication, evidence references and public-data projection.",
+      "evidence": ["lib/content/validation.ts", "tests/runtime-publication.test.ts", "tests/public-profiles.test.ts"]
+    },
+    {
+      "control_id": "QUALITY-ISO25010-001",
+      "classification": "EXECUTED",
+      "result": "PARTIAL",
+      "method": "Local lint, typecheck, unit/integration tests and production build; no operational quality measurement.",
+      "evidence": ["package.json", "compliance/ue-es/audit.json"]
+    },
+    {
+      "control_id": "SEO-GOOD-PRACTICE-001",
+      "classification": "EXECUTED",
+      "result": "PARTIAL",
+      "method": "Static and local production smoke for neutral metadata, noindex, disallow-all and empty sitemap.",
+      "evidence": ["app/robots.ts", "app/sitemap.ts", "lib/seo.ts", "output/playwright/production-holding-smoke.json"]
+    },
+    {
+      "control_id": "PRIV-RIGHTS-001",
+      "classification": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "reason": "No real data subject, backend procedure or rights workflow exists to exercise end to end."
+    },
+    {
+      "control_id": "COOKIE-LSSI-CONSENT-001",
+      "classification": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "reason": "No deployed runtime or four-state cookie/storage/network inventory exists."
+    },
+    {
+      "control_id": "COOKIE-AEPD-UX-001",
+      "classification": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "reason": "No non-exempt technology inventory or CMP exists to test equivalent choices and withdrawal."
+    },
+    {
+      "control_id": "SEC-HEADERS-CONTEXT-001",
+      "classification": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "reason": "No deployed origin, CDN or final hosting configuration exists."
+    },
+    {
+      "control_id": "SEC-SCA-REACHABILITY-001",
+      "classification": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "reason": "The integrated scanner failed without a durable scan identifier or reachability result."
+    },
+    {
+      "control_id": "PERF-CWV-CONTEXT-001",
+      "classification": "NOT_TESTED",
+      "result": "NOT_TESTED",
+      "reason": "No deployed runtime, frozen visual release or field data exists."
+    },
+    {
+      "control_id": "CEFR-BANK-B2-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "The declared sector is not consumer banking.",
+      "reopen_trigger": "A covered consumer-banking service is introduced."
+    },
+    {
+      "control_id": "CONS-PAYMENT-BUTTON-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "The snapshot has no checkout or button creating a payment obligation.",
+      "reopen_trigger": "Checkout or an online payment obligation is introduced."
+    },
+    {
+      "control_id": "CONS-DIGITAL-CONTENT-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No digital-content supply is described or implemented.",
+      "reopen_trigger": "Digital content or service-specific digital supply is offered."
+    },
+    {
+      "control_id": "CONS-ODR-LEGACY-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "The legacy EU ODR-link requirement has been repealed; the control exists to prevent stale implementation.",
+      "reopen_trigger": "The legal register or the service's dispute framework materially changes."
+    },
+    {
+      "control_id": "PRODUCT-GPSR-OFFER-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No consumer product offer is described or implemented.",
+      "reopen_trigger": "A consumer product offer is added."
+    },
+    {
+      "control_id": "PLAT-DMA-DESIGNATION-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No designated gatekeeper or core platform service role is observed.",
+      "reopen_trigger": "The operator or a provider is shown to act as a designated gatekeeper in the relevant flow."
+    },
+    {
+      "control_id": "SEC-ACTIVE-AUTH-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "The public snapshot has no authentication surface and active auth testing was not authorised.",
+      "reopen_trigger": "CMS/admin/user authentication is implemented and testing is authorised."
+    },
+    {
+      "control_id": "SEC-PCI-CONTEXT-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "The snapshot has no card-data flow or payment processor integration.",
+      "reopen_trigger": "A payment or card-data flow is introduced."
+    },
+    {
+      "control_id": "SEC-NIS2-READINESS-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "The current profile excludes a covered NIS entity with recorded sector evidence.",
+      "reopen_trigger": "The operator, sector or size facts change."
+    },
+    {
+      "control_id": "SEC-DORA-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No financial-entity or in-scope ICT third-party role is declared.",
+      "reopen_trigger": "A DORA-covered role is identified."
+    },
+    {
+      "control_id": "SEC-CRA-DATES-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "The repository is not presented as a commercial product with digital elements.",
+      "reopen_trigger": "A covered product with digital elements is placed on the market."
+    },
+    {
+      "control_id": "AI-ROLE-DATE-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No operational AI system or AI role is declared or observed.",
+      "reopen_trigger": "An AI system or provider/deployer role is introduced."
+    },
+    {
+      "control_id": "DATA-ACT-SCOPE-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No connected product or related data service is described.",
+      "reopen_trigger": "A connected product, related service or covered data-holder role is introduced."
+    },
+    {
+      "control_id": "CRYPTO-MICA-SCOPE-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No crypto-asset service or offer is described.",
+      "reopen_trigger": "A crypto-asset offer or service is introduced."
+    },
+    {
+      "control_id": "PAY-PSD2-SCA-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No electronic payment flow is implemented in the snapshot.",
+      "reopen_trigger": "An electronic payment flow or payment-service role is introduced."
+    },
+    {
+      "control_id": "IDENTITY-EIDAS-001",
+      "classification": "NOT_APPLICABLE_CURRENT_SNAPSHOT",
+      "reason": "No trust service, qualified signature or European Digital Identity flow is described.",
+      "reopen_trigger": "A covered trust or identity-wallet flow is introduced."
+    },
+    {
+      "control_id": "A11Y-PUBLIC-001",
+      "classification": "NOT_SELECTED",
+      "reason": "Public-sector ownership, funding or contractual nexus remains unresolved; no substantive public-portal audit was run."
+    },
+    {
+      "control_id": "CONS-GREEN-READINESS-001",
+      "classification": "NOT_SELECTED",
+      "reason": "No environmental claim review was selected for this increment."
+    },
+    {
+      "control_id": "CONS-GEOBLOCK-001",
+      "classification": "NOT_SELECTED",
+      "reason": "No cross-border sales or access-condition test was selected for this local snapshot."
+    },
+    {
+      "control_id": "PUB-ENS-001",
+      "classification": "NOT_SELECTED",
+      "reason": "Public-sector or covered supplier scope remains unresolved."
+    },
+    {
+      "control_id": "PUB-ENI-001",
+      "classification": "NOT_SELECTED",
+      "reason": "Public-sector or covered interoperability scope remains unresolved."
+    },
+    {
+      "control_id": "PUB-EIF-001",
+      "classification": "NOT_SELECTED",
+      "reason": "No public cross-border interoperability flow was selected."
+    },
+    {
+      "control_id": "PUB-INTEROP-EU-001",
+      "classification": "NOT_SELECTED",
+      "reason": "No public cross-border interoperability assessment was selected."
+    },
+    {
+      "control_id": "WHISTLE-CHANNEL-001",
+      "classification": "NOT_SELECTED",
+      "reason": "Entity size and whistleblowing-channel facts were not available or selected for this web increment."
+    },
+    {
+      "control_id": "PUB-EADMIN-FLOW-001",
+      "classification": "NOT_SELECTED",
+      "reason": "No public electronic-administration procedure was identified or tested."
+    },
+    {
+      "control_id": "PUB-PROCUREMENT-SCOPE-001",
+      "classification": "NOT_SELECTED",
+      "reason": "No procurement or public-contract nexus was established; the question remains open."
+    }
+  ]
+}

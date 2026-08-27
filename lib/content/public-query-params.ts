@@ -24,9 +24,10 @@ function singleValue(
 ): string | undefined | null {
   const values = params.getAll(key);
   if (values.length === 0) return undefined;
-  if (values.length !== 1 || values[0].length === 0 || values[0].length > 64) {
+  if (values.length !== 1 || values[0].length > 64) {
     return null;
   }
+  if (values[0].length === 0) return undefined;
   return values[0];
 }
 

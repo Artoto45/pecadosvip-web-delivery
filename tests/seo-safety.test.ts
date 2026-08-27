@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
+import { buildPublicMetadata } from '../lib/seo.ts';
 import { resolveSiteConfig } from '../lib/site-config.ts';
 
 test('indexing and structured data are disabled without a confirmed origin', () => {
@@ -54,4 +55,47 @@ test('both explicit approvals are required before indexing is enabled', () => {
   assert.equal(oneApproval.indexingEnabled, false);
   assert.equal(approved.indexingEnabled, true);
   assert.equal(approved.structuredDataEnabled, true);
+});
+
+test('metadata omits canonical and social URLs when the content route is not publishable', () => {
+  const metadata = buildPublicMetadata(
+    {
+      path: '/perfiles',
+      title: 'Perfiles',
+      description: 'Perfiles aprobados.',
+    },
+    {
+      origin: 'https://www.pecadosvip.com',
+      indexingEnabled: true,
+      structuredDataEnabled: true,
+    },
+    false,
+  );
+
+  assert.equal(metadata.alternates, undefined);
+  assert.equal(metadata.openGraph && 'url' in metadata.openGraph, false);
+  assert.equal(metadata.title, 'Sitio en preparación');
+  assert.doesNotMatch(String(metadata.description), /Perfiles aprobados/);
+  assert.deepEqual(metadata.robots, { index: false, follow: false });
+});
+
+test('metadata emits canonical only when environment and content route gates pass', () => {
+  const metadata = buildPublicMetadata(
+    {
+      path: '/perfiles',
+      title: 'Perfiles',
+      description: 'Perfiles aprobados.',
+    },
+    {
+      origin: 'https://www.pecadosvip.com',
+      indexingEnabled: true,
+      structuredDataEnabled: true,
+    },
+    true,
+  );
+
+  assert.deepEqual(metadata.alternates, {
+    canonical: 'https://www.pecadosvip.com/perfiles',
+  });
+  assert.deepEqual(metadata.robots, { index: true, follow: true });
 });

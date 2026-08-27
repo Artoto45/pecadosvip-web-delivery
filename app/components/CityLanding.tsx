@@ -1,7 +1,15 @@
 import Image from 'next/image';
-import Link from 'next/link';
+import {
+  getRuntimeVisibilityState,
+  isRuntimeRouteIndexable,
+} from '../../lib/content/runtime-publication';
 import { siteConfig } from '../../lib/site-config';
 import type { CityContent } from '../city-data';
+import ContactOptions from './ContactOptions';
+import ProvisionalNotice from './ProvisionalNotice';
+import PublicFooter from './PublicFooter';
+import PublicHeader from './PublicHeader';
+import ReleaseHoldingPage from './ReleaseHoldingPage';
 
 type CityLandingProps = {
   content: CityContent;
@@ -12,19 +20,20 @@ function safeJsonLd(data: unknown) {
 }
 
 export default function CityLanding({ content }: CityLandingProps) {
-  const isMadrid = content.slug === 'madrid';
-  const otherCity = isMadrid
-    ? { label: 'Barcelona', href: '/barcelona' }
-    : { label: 'Madrid', href: '/madrid' };
+  if (!getRuntimeVisibilityState().renderPublicExperience) {
+    return <ReleaseHoldingPage />;
+  }
+
+  const routePath = `/${content.slug}`;
+  const routeIndexable =
+    siteConfig.indexingEnabled && isRuntimeRouteIndexable(routePath);
   const siteUrl = siteConfig.origin;
-  const pageUrl = siteUrl ? `${siteUrl}/${content.slug}` : undefined;
-  const formAction = process.env.NEXT_PUBLIC_CONTACT_FORM_ACTION;
-  const whatsappUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL || '#solicitud';
-  const telegramUrl = process.env.NEXT_PUBLIC_TELEGRAM_URL || '#solicitud';
-  const phoneUrl = process.env.NEXT_PUBLIC_PHONE_URL || '#solicitud';
+  const pageUrl = routeIndexable && siteUrl
+    ? `${siteUrl}/${content.slug}`
+    : undefined;
 
   const structuredData =
-    siteConfig.structuredDataEnabled && siteUrl && pageUrl
+    routeIndexable && siteConfig.structuredDataEnabled && siteUrl && pageUrl
       ? [
     {
       '@context': 'https://schema.org',
@@ -83,7 +92,7 @@ export default function CityLanding({ content }: CityLandingProps) {
       : null;
 
   return (
-    <main className={`city-page city-${content.slug}`}>
+    <main className={`city-page city-${content.slug}`} id="main-content" tabIndex={-1}>
       {structuredData ? (
         <script
           type="application/ld+json"
@@ -91,42 +100,8 @@ export default function CityLanding({ content }: CityLandingProps) {
         />
       ) : null}
 
-      <header className="site-header">
-        <Link
-          className="brand"
-          href={`/${content.slug}`}
-          aria-label={`PecadosVip ${content.city}`}
-        >
-          <span className="apple-mark" aria-hidden="true"><span /></span>
-          <span>Pecados<span>Vip</span></span>
-        </Link>
-
-        <nav className="desktop-nav" aria-label="Ciudades principales">
-          <Link
-            className={isMadrid ? 'active' : undefined}
-            href="/madrid"
-            aria-current={isMadrid ? 'page' : undefined}
-          >
-            Madrid
-          </Link>
-          <Link
-            className={!isMadrid ? 'active' : undefined}
-            href="/barcelona"
-            aria-current={!isMadrid ? 'page' : undefined}
-          >
-            Barcelona
-          </Link>
-        </nav>
-
-        <a className="header-cta" href="#contacto">Consultar</a>
-      </header>
-
-      <div className="mobile-city-switch" aria-label="Cambiar de ciudad">
-        <Link href={`/${content.slug}`} aria-current="page">
-          {content.city}
-        </Link>
-        <Link href={otherCity.href}>{otherCity.label}</Link>
-      </div>
+      <PublicHeader currentPath={routePath} />
+      <ProvisionalNotice />
 
       <section className="hero" aria-labelledby="page-title">
         <div className="hero-grid" aria-hidden="true" />
@@ -309,88 +284,12 @@ export default function CityLanding({ content }: CityLandingProps) {
             <p className="section-label">Reserva privada · {content.city}</p>
             <h2>{content.closingTitle}</h2>
             <p>{content.closingText}</p>
-            <div className="channel-grid" aria-label="Canales de contacto previstos">
-              <a href={whatsappUrl}><span>WA</span> WhatsApp</a>
-              <a href={telegramUrl}><span>TG</span> Telegram</a>
-              <a href={phoneUrl}><span>TL</span> Teléfono</a>
-              <a href="#solicitud"><span>FM</span> Formulario</a>
-            </div>
           </div>
-
-          <form
-            className="contact-form"
-            id="solicitud"
-            action={formAction || undefined}
-            method="post"
-          >
-            <input type="hidden" name="city" value={content.city} />
-            <label>
-              Zona o municipio
-              <input
-                name="zone"
-                placeholder={isMadrid ? 'Ej. Centro o Pozuelo' : 'Ej. Eixample o Sitges'}
-                autoComplete="address-level2"
-                required
-              />
-            </label>
-            <div className="field-row">
-              <label>
-                Fecha aproximada
-                <input name="date" type="date" required />
-              </label>
-              <label>
-                Lugar
-                <select name="venue" defaultValue="" required>
-                  <option value="" disabled>Selecciona</option>
-                  <option value="hotel">Hotel</option>
-                  <option value="domicilio">Domicilio</option>
-                </select>
-              </label>
-            </div>
-            <label>
-              Canal preferido
-              <select name="channel" defaultValue="" required>
-                <option value="" disabled>Selecciona un canal</option>
-                <option value="whatsapp">WhatsApp</option>
-                <option value="telegram">Telegram</option>
-                <option value="telefono">Teléfono</option>
-              </select>
-            </label>
-            <button type="submit" disabled={!formAction}>
-              {formAction ? 'Enviar solicitud' : 'Canal seguro en preparación'}
-              <span aria-hidden="true">→</span>
-            </button>
-            <p className="form-note">
-              No incluyas información sensible. La solicitud solo se enviará
-              cuando el canal seguro esté configurado.
-            </p>
-          </form>
+          <ContactOptions />
         </div>
       </section>
 
-      <footer className="site-footer">
-        <div>
-          <Link className="brand" href={`/${content.slug}`}>
-            <span className="apple-mark" aria-hidden="true"><span /></span>
-            <span>Pecados<span>Vip</span></span>
-          </Link>
-          <p>Compañía privada con desplazamiento en Madrid y Barcelona.</p>
-        </div>
-        <div className="footer-city">
-          <span>También en</span>
-          <Link href={otherCity.href}>
-            {otherCity.label} <b aria-hidden="true">↗</b>
-          </Link>
-        </div>
-        <div className="footer-legal">
-          <span>Exclusivo para mayores de 18 años</span>
-          <span>Privacidad · Discreción · Respeto</span>
-        </div>
-      </footer>
-
-      <a className="mobile-sticky-cta" href="#contacto">
-        Consultar en {content.city} <span aria-hidden="true">→</span>
-      </a>
+      <PublicFooter />
     </main>
   );
 }

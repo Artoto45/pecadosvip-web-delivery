@@ -1,6 +1,6 @@
 # PROJECT CONTROL — PecadosVip Web
 
-Última actualización: 2026-08-27 03:08 America/Bogota
+Última actualización: 2026-08-27 10:30 America/Bogota
 Fecha límite dirigida por el usuario: 2026-08-29 22:00 America/Bogota
 Patrocinador y autoridad de aceptación: Luis Araujo
 Estado actual: **ALERTA ROJA / EJECUCIÓN CON BLOQUEOS EXTERNOS**
@@ -74,6 +74,22 @@ Las Focus Areas de Initiating, Planning, Executing, Monitoring and Controlling y
 - Desarrollo, hosting, almacenamiento multimedia, dominio, analítica y SEO mensual se controlan por separado.
 - La preparación SEO inicial no incluye garantía ni mantenimiento recurrente.
 
+## Medición de avance
+
+La revisión adversarial independiente calcula **52/100 (±2)** de avance de ejecución ponderado:
+
+| Dimensión | Puntos |
+|---|---:|
+| Inventario y evidencia | 13/15 |
+| Arquitectura | 8/10 |
+| Implementación e integración | 19/45 |
+| QA y correcciones | 10/25 |
+| Empaquetado y handoff | 2/5 |
+
+Esta métrica supera el objetivo de 50 % como proxy de trabajo ejecutado, pero no equivale a requisitos aceptados. La verificación estricta permanece en **2/20 requisitos (10 %)**: 2 `VERIFIED`, 12 `PARTIAL`, 5 `BLOCKED` y 1 `AT_RISK`. Tampoco mide conformidad legal, accesibilidad completa, operación ni readiness de producción.
+
+La puerta final de este checkpoint pasó 65/65 pruebas, lint, tipos y build; deberá repetirse si el árbol cambia. La evidencia Chromium del UI es pre-boundary; el preview Vinext real no está operativo. El boundary de producción sí permanece fail-closed y la publicación pública continúa `NO-GO`.
+
 ## Pronóstico y alerta roja
 
 Estimación para una entrega de producción completa con la evidencia disponible:
@@ -92,7 +108,7 @@ Total de línea base: 130–215 h. A las 02:13 del 27/08 quedan 67,78 h calendar
 |---|---|---|
 | Línea base de evidencia y arquitectura | 27/08 02:00 | 100 % de archivos inventariados; requisitos y bloqueos trazados |
 | Incremento vertical público | 27/08 18:00 | Inicio → listado → perfil → contacto ejecutable |
-| CMS local y rutas SEO prioritarias | 28/08 14:00 | CRUD/estados/preview local; rutas y metadata verificadas |
+| CMS local y rutas SEO prioritarias | 28/08 14:00 | Contratos CRUD/estados y rutas/metadata verificados; preview operativo aún pendiente |
 | Integración y congelamiento de alcance | 29/08 07:00 | P0/P1 implementados o excepción explícita |
 | Reserva QA/release/handoff | 29/08 07:00–22:00 | regresión, correcciones, paquete, hashes y smoke final |
 
@@ -129,9 +145,9 @@ Ruta crítica: selección visual → activos/contenido → incremento público �
 - Schedule: alerta roja activa; reserva final protegida.
 - Finance: cero gasto nuevo; 600 EUR no confirmado como alcance cerrado.
 - Stakeholders: roles principales identificados; datos de responsables externos pendientes.
-- Resources: stack, clon, remoto privado y 46 pruebas de contrato verificadas; contenido, activos y servicios externos faltantes.
+- Resources: stack, clon, remoto privado y 65 pruebas verificadas; contenido, activos y servicios externos faltantes.
 - Risk: exposición global alta por alcance/tiempo, legal, contenido y diseño no aprobado.
 
 ## Próximo hito
 
-La arquitectura, la investigación acotada, la especificación de medición, el contrato CMS local, las puertas SEO seguras, la consulta pública y la analítica fail-closed están integrados. El siguiente incremento técnico requeriría un route handler, fuente persistente, CMP o proveedor; el incremento visual sigue pendiente de la decisión material: propuesta 5:38:50 como portada y 5:19:36 como referencia de listado y perfil.
+El flujo público, las rutas legales, el contrato CMS local, la consulta, el SEO/contacto y el boundary de producción fail-closed están integrados. El build bloqueado muestra únicamente un holding neutral. El siguiente incremento requiere decisiones externas sobre actividad/publicidad española, identidad legal, privacidad/edad/derechos, contenido, visual, infraestructura y canales. La referencia visual recomendada sigue siendo 5:38:50 para portada y 5:19:36 para listado/ficha, pendiente de confirmación del usuario.
