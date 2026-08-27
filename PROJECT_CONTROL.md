@@ -1,6 +1,6 @@
 # PROJECT CONTROL — PecadosVip Web
 
-Última actualización: 2026-08-26 23:41 America/Bogota
+Última actualización: 2026-08-27 02:13 America/Bogota
 Fecha límite dirigida por el usuario: 2026-08-29 22:00 America/Bogota
 Patrocinador y autoridad de aceptación: Luis Araujo
 Estado actual: **ALERTA ROJA / EJECUCIÓN CON BLOQUEOS EXTERNOS**
@@ -84,7 +84,7 @@ Estimación para una entrega de producción completa con la evidencia disponible
 - SEO local, legal, contenido y configuración externa: 20–40 h más dependencias humanas.
 - QA, correcciones, release y handoff: 20–30 h.
 
-Total de línea base: 130–215 h. A las 23:41 del 26/08 quedan 70,31 h calendario; la reserva final del 20 % equivale a 14,06 h y deja 56,25 h antes del gate final. La alerta roja permanece: contratos y pruebas reducen riesgo, pero las dependencias humanas y el trabajo de frontend, CMS, contenido, legal y QA todavía exceden la capacidad disponible sin aumentar recursos, ampliar fecha o aceptar excepciones explícitas.
+Total de línea base: 130–215 h. A las 02:13 del 27/08 quedan 67,78 h calendario; la reserva final del 20 % equivale a 13,56 h y deja 54,22 h antes del gate final. La alerta roja permanece: contratos y pruebas reducen riesgo, pero las dependencias humanas y el trabajo de frontend, CMS operacional, contenido, legal y QA todavía exceden la capacidad disponible sin aumentar recursos, ampliar fecha o aceptar excepciones explícitas.
 
 ## Cronograma hacia atrás
 
@@ -129,9 +129,9 @@ Ruta crítica: selección visual → activos/contenido → incremento público �
 - Schedule: alerta roja activa; reserva final protegida.
 - Finance: cero gasto nuevo; 600 EUR no confirmado como alcance cerrado.
 - Stakeholders: roles principales identificados; datos de responsables externos pendientes.
-- Resources: stack, clon, remoto privado y 11 pruebas de contrato verificados; contenido, activos y servicios externos faltantes.
+- Resources: stack, clon, remoto privado y 28 pruebas de contrato verificadas; contenido, activos y servicios externos faltantes.
 - Risk: exposición global alta por alcance/tiempo, legal, contenido y diseño no aprobado.
 
 ## Próximo hito
 
-Integrar las puertas de publicación con SEO seguro por defecto y completar la arquitectura no visual. El incremento visual sigue pendiente de la decisión material: propuesta 5:38:50 como portada y 5:19:36 como referencia de listado y perfil.
+El contrato CMS local y las puertas SEO seguras están integrados. El siguiente incremento no visual es completar arquitectura de rutas y adaptadores sin contenido personal; el incremento visual sigue pendiente de la decisión material: propuesta 5:38:50 como portada y 5:19:36 como referencia de listado y perfil.

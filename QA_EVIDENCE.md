@@ -1,6 +1,6 @@
 # QA EVIDENCE — PecadosVip Web
 
-Última actualización: 2026-08-26 22:00 America/Bogota.
+Última actualización: 2026-08-27 02:13 America/Bogota.
 
 ## Baseline del repositorio reutilizado
 
@@ -10,8 +10,10 @@
 | Dependencias versionadas | PASS | `pnpm-lock.yaml`; instalación limpia completada en clon aislado |
 | Lint | PASS | `pnpm run lint`; salida sin errores |
 | Typecheck | PASS | `pnpm run typecheck`; TypeScript sin errores |
-| Contratos de contenido y release | PASS | `pnpm run test`; 11/11 pruebas pasan, incluidos nueve perfiles, estados, permisos y fail-closed |
+| Contratos de contenido, repositorio local, release y SEO seguro | PASS | `pnpm run test`; 28/28 pruebas pasan: perfiles, estados, roles runtime, referencias agregadas, evidencia, concurrencia optimista, auditoría, medios y configuración SEO |
+| CMS local de dominio | PASS WITH LIMITS | CRUD lógico de perfiles, duplicado seguro, archivo/restauración, disponibilidad, orden de medios y bitácora validados en memoria; sin UI, autenticación, persistencia ni almacenamiento |
 | Build de producción | PASS | `pnpm run build`; `dist/client`, `dist/server/index.js` y `dist/.openai/hosting.json` presentes |
+| Smoke HTTP SEO cerrado | PASS | build servido en `127.0.0.1:4174`: `robots.txt` disallow-all, sitemap con 0 URLs, Madrid/Barcelona 200 con noindex y sin canonical/JSON-LD; servidor detenido después |
 | Checkpoint GitHub | PASS | remoto privado `Artoto45/pecadosvip-web-delivery`; PR borrador #1; SHA local/remoto `152f81a` en el checkpoint inicial |
 | Cobertura de requisitos fuente | FAIL | el baseline solo ofrece `/madrid` y `/barcelona`; faltan inicio, perfiles, CMS, legales y hubs restantes |
 | QA visual contra mockup | NOT RUN | bloqueada por falta de selección/aprobación visual |

@@ -10,6 +10,7 @@ Este repositorio conserva la base pública existente de Madrid y Barcelona y añ
 - Contratos tipados para ciudades, perfiles, servicios, medios, aprobaciones, contacto y documentos legales.
 - Estados `draft`, `hidden`, `published` y `archived`.
 - Roles de contrato `admin` y `editor`, duplicado seguro, archivo y restauración.
+- Repositorio CMS local en memoria con revisión optimista, protección contra repetición, disponibilidad, orden multimedia y bitácora sin contenido personal de perfiles.
 - Validación de mayoría de edad, consentimiento, derechos de uso, contenido local, cobertura y requisitos de release.
 - Manifiesto de rutas que excluye registros no publicables.
 - SEO cerrado por defecto hasta confirmar dominio, indexación y contenido.
@@ -37,12 +38,12 @@ Copia `.env.example` a `.env.local` únicamente en tu entorno. No confirmes `.en
 La publicación SEO permanece deshabilitada salvo que se cumplan simultáneamente estas condiciones:
 
 ```dotenv
-NEXT_PUBLIC_SITE_URL=https://dominio-confirmado.example
-NEXT_PUBLIC_ALLOW_INDEXING=true
-NEXT_PUBLIC_CONTENT_APPROVED=true
+NEXT_PUBLIC_SITE_URL=
+NEXT_PUBLIC_ALLOW_INDEXING=false
+NEXT_PUBLIC_CONTENT_APPROVED=false
 ```
 
-`NEXT_PUBLIC_SITE_URL` debe ser un origen HTTPS real, sin ruta, usuario, contraseña, query ni fragmento. Los dominios locales o reservados son rechazados. Las dos banderas no sustituyen la validación de contenido ni la aceptación formal.
+Conserva esos valores hasta recibir el origen definitivo y las dos aprobaciones. Después, `NEXT_PUBLIC_SITE_URL` debe contener un origen HTTPS real, sin ruta, usuario, contraseña, query ni fragmento. Los dominios locales o reservados son rechazados. Las dos banderas no sustituyen la validación de contenido ni la aceptación formal.
 
 Los canales permanecen vacíos hasta recibir destinos aprobados:
 
@@ -86,6 +87,12 @@ Sin configuración aprobada:
 ## Datos y contenidos
 
 Los registros sintéticos viven únicamente en `tests/` y no son importados por la aplicación. No hay perfiles reales ni medios personales en este repositorio. La carga pública exige evidencia trazable de mayoría de edad, consentimiento, derechos de uso y aprobación de contenido.
+
+### Límite del repositorio CMS local
+
+`InMemoryProfileRepository` es una prueba de dominio y seguridad para desarrollo y tests. No es un CMS operacional: no persiste al reiniciar, no autentica usuarios, no almacena archivos y no sustituye una base de datos transaccional. Su API omite borrado físico; archivar es la eliminación normal y restaurar invalida aprobación y evidencias anteriores.
+
+La bitácora conserva identificadores operativos opacos de actor y solicitud, no biografías ni valores de perfil. El adaptador productivo deberá definir acceso, retención y seudonimización. Una solicitud repetida se rechaza; no se devuelve automáticamente el resultado anterior, por lo que esto es protección contra replay y no idempotencia completa.
 
 ## Gobierno y evidencia
 

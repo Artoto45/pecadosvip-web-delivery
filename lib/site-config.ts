@@ -10,7 +10,7 @@ export type SiteConfig = {
   structuredDataEnabled: boolean;
 };
 
-function normalizeProductionOrigin(value: string | undefined): string | undefined {
+export function normalizeProductionOrigin(value: string | undefined): string | undefined {
   const candidate = value?.trim();
   if (!candidate) return undefined;
 

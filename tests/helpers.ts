@@ -52,6 +52,7 @@ export function makeProfile(index: number): Profile {
     citySlugs: [citySlug],
     status: 'published',
     approval: approved,
+    verificationEvidenceReference: 'synthetic-test-only',
     adultAgeConfirmed: true,
     publicationConsentConfirmed: true,
     rightsConfirmed: true,
@@ -115,7 +116,7 @@ export function makeSnapshot(profileCount = 8): ContentSnapshot {
     ],
     settings: {
       brandName: 'Synthetic test brand',
-      canonicalOrigin: 'https://pecadosvip.example.test',
+      canonicalOrigin: 'https://synthetic-test-only.example.org',
       publicationEnabled: true,
       analyticsConsentConfigured: true,
       contact: { telegramUrl: 'https://t.me/synthetic_test_only' },

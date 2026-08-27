@@ -1,3 +1,4 @@
+import { normalizeProductionOrigin } from '../site-config.ts';
 import { citySlugs } from './types.ts';
 import type {
   ApprovalRecord,
@@ -5,6 +6,7 @@ import type {
   ContentSnapshot,
   LegalDocument,
   Profile,
+  Service,
 } from './types.ts';
 
 export type ValidationIssue = {
@@ -24,6 +26,7 @@ function isApproved(approval: ApprovalRecord): boolean {
     approval.state === 'approved' &&
     hasText(approval.approvedBy ?? '') &&
     hasText(approval.approvedAt ?? '') &&
+    isIsoDate(approval.approvedAt ?? '') &&
     hasText(approval.sourceReference ?? '')
   );
 }
@@ -33,14 +36,73 @@ function isIsoDate(value: string): boolean {
 }
 
 function isHttpsOrigin(value: string | undefined): boolean {
-  if (!value) return false;
+  return normalizeProductionOrigin(value) !== undefined;
+}
+
+function hasUsableMediaUrl(value: string): boolean {
+  if (value.startsWith('/')) return value.length > 1;
 
   try {
-    const url = new URL(value);
-    return url.protocol === 'https:' && url.origin === value.replace(/\/$/, '');
+    return new URL(value).protocol === 'https:';
   } catch {
     return false;
   }
+}
+
+export function isProfilePublicationReady(profile: Profile): boolean {
+  const mediaIds = new Set<string>();
+  const mediaOrders = new Set<number>();
+  const mediaReady =
+    profile.media.length > 0 &&
+    profile.media.every((media) => {
+      const valid = Boolean(
+        hasText(media.id) &&
+          hasUsableMediaUrl(media.desktopUrl) &&
+          hasText(media.alt) &&
+          media.rightsConfirmed === true &&
+          hasText(media.rightsEvidence ?? '') &&
+          Number.isInteger(media.order) &&
+          media.order >= 0 &&
+          !mediaIds.has(media.id) &&
+          !mediaOrders.has(media.order),
+      );
+      mediaIds.add(media.id);
+      mediaOrders.add(media.order);
+      return valid;
+    });
+  const mediaOrderReady =
+    mediaReady &&
+    [...mediaOrders]
+      .sort((left, right) => left - right)
+      .every((order, index) => order === index);
+
+  return Boolean(
+    slugPattern.test(profile.slug) &&
+      typeof profile.age === 'number' &&
+      Number.isInteger(profile.age) &&
+      profile.age >= 18 &&
+      isApproved(profile.approval) &&
+      hasText(profile.verificationEvidenceReference ?? '') &&
+      profile.adultAgeConfirmed === true &&
+      profile.publicationConsentConfirmed === true &&
+      profile.rightsConfirmed === true &&
+      hasText(profile.displayName) &&
+      hasText(profile.biography) &&
+      profile.languages.length > 0 &&
+      profile.serviceIds.length > 0 &&
+      profile.citySlugs.length > 0 &&
+      profile.citySlugs.every((slug) => citySlugs.includes(slug)) &&
+      Object.values(profile.measurements).every(
+        (value) =>
+          value === undefined || (Number.isFinite(value) && value > 0),
+      ) &&
+      mediaReady &&
+      mediaOrderReady &&
+      isIsoDate(profile.createdAt) &&
+      isIsoDate(profile.updatedAt) &&
+      Number.isInteger(profile.revision) &&
+      profile.revision >= 1,
+  );
 }
 
 function validateLegalDocument(
@@ -133,7 +195,8 @@ function validateCity(
 function validateProfile(
   profile: Profile,
   index: number,
-  serviceIds: Set<string>,
+  servicesById: Map<string, Service>,
+  citiesBySlug: Map<string, CityPage>,
   issues: ValidationIssue[],
 ): void {
   const path = `profiles[${index}]`;
@@ -146,7 +209,10 @@ function validateProfile(
     });
   }
 
-  if (!Number.isInteger(profile.age) || profile.age < 18) {
+  if (
+    profile.age !== null &&
+    (!Number.isInteger(profile.age) || profile.age < 18)
+  ) {
     issues.push({
       code: 'PROFILE_AGE_INVALID',
       path: `${path}.age`,
@@ -171,17 +237,76 @@ function validateProfile(
   }
 
   for (const serviceId of profile.serviceIds) {
-    if (!serviceIds.has(serviceId)) {
+    const service = servicesById.get(serviceId);
+    if (!service) {
       issues.push({
         code: 'PROFILE_SERVICE_REFERENCE_MISSING',
         path: `${path}.serviceIds`,
         message: `Unknown service id: ${serviceId}`,
       });
+    } else if (
+      profile.status === 'published' &&
+      (service.status !== 'published' || !isApproved(service.approval))
+    ) {
+      issues.push({
+        code: 'PROFILE_SERVICE_NOT_PUBLISHABLE',
+        path: `${path}.serviceIds`,
+        message: `Service is not approved and published: ${serviceId}`,
+      });
     }
   }
 
+  for (const citySlug of profile.citySlugs) {
+    const city = citiesBySlug.get(citySlug);
+    if (!citySlugs.includes(citySlug) || !city) {
+      issues.push({
+        code: 'PROFILE_CITY_REFERENCE_INVALID',
+        path: `${path}.citySlugs`,
+        message: `Unsupported profile city slug: ${citySlug}`,
+      });
+    } else if (
+      profile.status === 'published' &&
+      (city.status !== 'published' ||
+        !city.seo.indexable ||
+        !city.serviceConfirmed ||
+        !isApproved(city.approval))
+    ) {
+      issues.push({
+        code: 'PROFILE_CITY_NOT_PUBLISHABLE',
+        path: `${path}.citySlugs`,
+        message: `City is not approved and published: ${citySlug}`,
+      });
+    }
+  }
+
+  for (const [key, value] of Object.entries(profile.measurements)) {
+    if (value !== undefined && (!Number.isFinite(value) || value <= 0)) {
+      issues.push({
+        code: 'PROFILE_MEASUREMENT_INVALID',
+        path: `${path}.measurements.${key}`,
+        message: 'Profile measurements must be positive finite numbers.',
+      });
+    }
+  }
+
+  const mediaIds = new Set<string>();
   const mediaOrders = new Set<number>();
   for (const [mediaIndex, media] of profile.media.entries()) {
+    if (!hasText(media.id) || mediaIds.has(media.id)) {
+      issues.push({
+        code: 'MEDIA_ID_INVALID',
+        path: `${path}.media[${mediaIndex}].id`,
+        message: 'Media IDs must be non-empty and unique within a profile.',
+      });
+    }
+    mediaIds.add(media.id);
+    if (!hasUsableMediaUrl(media.desktopUrl)) {
+      issues.push({
+        code: 'MEDIA_URL_INVALID',
+        path: `${path}.media[${mediaIndex}].desktopUrl`,
+        message: 'Media needs a root-relative or HTTPS desktop URL.',
+      });
+    }
     if (!hasText(media.alt)) {
       issues.push({
         code: 'MEDIA_ALT_MISSING',
@@ -203,23 +328,27 @@ function validateProfile(
         message: `Duplicate media order: ${media.order}`,
       });
     }
+    if (!Number.isInteger(media.order) || media.order < 0) {
+      issues.push({
+        code: 'MEDIA_ORDER_INVALID',
+        path: `${path}.media[${mediaIndex}].order`,
+        message: 'Media order must be a non-negative integer.',
+      });
+    }
     mediaOrders.add(media.order);
   }
 
-  if (profile.status === 'published') {
-    const publicationBlocked =
-      !isApproved(profile.approval) ||
-      !profile.adultAgeConfirmed ||
-      !profile.publicationConsentConfirmed ||
-      !profile.rightsConfirmed ||
-      !hasText(profile.displayName) ||
-      !hasText(profile.biography) ||
-      profile.languages.length === 0 ||
-      profile.serviceIds.length === 0 ||
-      profile.citySlugs.length === 0 ||
-      profile.media.length === 0;
+  const sortedOrders = [...mediaOrders].sort((left, right) => left - right);
+  if (sortedOrders.some((order, orderIndex) => order !== orderIndex)) {
+    issues.push({
+      code: 'MEDIA_ORDER_NOT_CONTIGUOUS',
+      path: `${path}.media`,
+      message: 'Media order must form a contiguous zero-based sequence.',
+    });
+  }
 
-    if (publicationBlocked) {
+  if (profile.status === 'published') {
+    if (!isProfilePublicationReady(profile)) {
       issues.push({
         code: 'PROFILE_PUBLICATION_EVIDENCE_MISSING',
         path,
@@ -244,6 +373,32 @@ function validateUnique(
   }
 }
 
+export type ProfilePublicationReferences = {
+  cities: readonly CityPage[];
+  services: readonly Service[];
+};
+
+export function validateProfileForPublication(
+  profile: Profile,
+  references: ProfilePublicationReferences,
+): ValidationIssue[] {
+  const issues: ValidationIssue[] = [];
+  const servicesById = new Map(
+    references.services.map((service) => [service.id, service]),
+  );
+  const citiesBySlug = new Map(
+    references.cities.map((city) => [city.slug, city]),
+  );
+  validateProfile(
+    { ...structuredClone(profile), status: 'published' },
+    0,
+    servicesById,
+    citiesBySlug,
+    issues,
+  );
+  return issues;
+}
+
 export function validateContentSnapshot(
   snapshot: ContentSnapshot,
   mode: 'draft' | 'release' = 'draft',
@@ -257,10 +412,17 @@ export function validateContentSnapshot(
   validateUnique(snapshot.services.map((service) => service.id), 'services', 'SERVICE_ID_DUPLICATE', issues);
 
   const profileSlugs = new Set(snapshot.profiles.map((profile) => profile.slug));
-  const serviceIds = new Set(snapshot.services.map((service) => service.id));
+  const servicesById = new Map(
+    snapshot.services.map((service) => [service.id, service]),
+  );
+  const citiesBySlug = new Map(
+    snapshot.cities.map((city) => [city.slug, city]),
+  );
 
   snapshot.cities.forEach((city, index) => validateCity(city, index, profileSlugs, issues));
-  snapshot.profiles.forEach((profile, index) => validateProfile(profile, index, serviceIds, issues));
+  snapshot.profiles.forEach((profile, index) =>
+    validateProfile(profile, index, servicesById, citiesBySlug, issues),
+  );
 
   if (mode === 'release') {
     if (!snapshot.settings.publicationEnabled) {
@@ -280,11 +442,46 @@ export function validateContentSnapshot(
     }
 
     const contacts = snapshot.settings.contact;
-    if (!Object.values(contacts).some((value) => hasText(value ?? ''))) {
+    const contactEntries = Object.entries(contacts).filter(([, value]) =>
+      hasText(value ?? ''),
+    );
+    if (contactEntries.length === 0) {
       issues.push({
         code: 'CONTACT_CHANNEL_MISSING',
         path: 'settings.contact',
         message: 'At least one approved contact destination is required for release.',
+      });
+    }
+    for (const [key, value] of contactEntries) {
+      const candidate = value ?? '';
+      const allowed =
+        (key === 'phoneUrl' && candidate.startsWith('tel:')) ||
+        (key === 'emailUrl' && candidate.startsWith('mailto:')) ||
+        ((key === 'telegramUrl' ||
+          key === 'whatsappUrl' ||
+          key === 'formActionUrl') &&
+          (() => {
+            try {
+              return new URL(candidate).protocol === 'https:';
+            } catch {
+              return false;
+            }
+          })());
+      if (!allowed) {
+        issues.push({
+          code: 'CONTACT_CHANNEL_INVALID',
+          path: `settings.contact.${key}`,
+          message:
+            'Contact destinations must use the approved HTTPS, tel or mailto scheme.',
+        });
+      }
+    }
+
+    if (!snapshot.settings.analyticsConsentConfigured) {
+      issues.push({
+        code: 'ANALYTICS_CONSENT_NOT_CONFIGURED',
+        path: 'settings.analyticsConsentConfigured',
+        message: 'Release requires an explicit analytics consent configuration.',
       });
     }
 

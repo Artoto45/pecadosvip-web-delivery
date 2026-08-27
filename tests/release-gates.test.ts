@@ -43,3 +43,20 @@ test('assertReleaseReady throws instead of silently publishing an unsafe snapsho
     /PROFILE_PUBLICATION_EVIDENCE_MISSING/,
   );
 });
+
+test('release rejects reserved origins, unsafe contacts and missing analytics consent', () => {
+  const snapshot = makeSnapshot();
+  snapshot.settings.canonicalOrigin = 'https://localhost';
+  snapshot.settings.contact = {
+    formActionUrl: 'javascript:alert(1)',
+  };
+  snapshot.settings.analyticsConsentConfigured = false;
+
+  const result = evaluateRelease(snapshot);
+  const codes = new Set(result.blockerCodes);
+
+  assert.equal(result.ok, false);
+  assert.equal(codes.has('CANONICAL_ORIGIN_INVALID'), true);
+  assert.equal(codes.has('CONTACT_CHANNEL_INVALID'), true);
+  assert.equal(codes.has('ANALYTICS_CONSENT_NOT_CONFIGURED'), true);
+});

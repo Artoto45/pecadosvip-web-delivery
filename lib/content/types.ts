@@ -52,7 +52,7 @@ export type Profile = {
   id: string;
   slug: string;
   displayName: string;
-  age: number;
+  age: number | null;
   biography: string;
   measurements: ProfileMeasurements;
   languages: string[];
@@ -62,6 +62,7 @@ export type Profile = {
   citySlugs: CitySlug[];
   status: PublicationStatus;
   approval: ApprovalRecord;
+  verificationEvidenceReference?: string;
   adultAgeConfirmed: boolean;
   publicationConsentConfirmed: boolean;
   rightsConfirmed: boolean;
@@ -146,11 +147,29 @@ export type ContentSnapshot = {
 
 export type AuditEvent = {
   id: string;
+  actorId: string;
   actorRole: CmsRole;
-  action: 'create' | 'edit' | 'duplicate' | 'publish' | 'hide' | 'archive' | 'restore';
+  requestId: string;
+  action:
+    | 'create'
+    | 'edit'
+    | 'duplicate'
+    | 'publish'
+    | 'hide'
+    | 'archive'
+    | 'restore'
+    | 'availability-change'
+    | 'reorder-media'
+    | 'record-evidence'
+    | 'approve'
+    | 'return-to-draft';
   entityType: 'profile' | 'city' | 'service' | 'settings';
   entityId: string;
+  sourceEntityId?: string;
   occurredAt: string;
   fromRevision?: number;
   toRevision?: number;
+  fromStatus?: PublicationStatus;
+  toStatus?: PublicationStatus;
+  changedFields: string[];
 };
