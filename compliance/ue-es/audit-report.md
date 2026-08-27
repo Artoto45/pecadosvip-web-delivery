@@ -3,8 +3,8 @@
 ## Resumen ejecutivo
 
 - Activo y propietario: repositorio `pecadosvip-web-delivery`; Luis Araujo es la autoridad de aceptación del producto, pero el prestador legal no está identificado.
-- Snapshot y entorno: rama `codex/pagina-web-checkpoint`, base `485277e3236b6aa8f897b408f3f88ab4161b831f` más working tree auditado **no congelado**; build local, sin URL desplegada. `checkpoint_sha`, `tree_sha` y `effective_at` están pendientes del commit final.
-- Fecha de auditoría y observación: 2026-08-27; última prueba integrada registrada 2026-08-27T15:40:03Z. Esto no sustituye el `effective_at` del futuro snapshot congelado.
+- Snapshot y entorno: rama `codex/pagina-web-checkpoint`, commit auditado `1ab3cd66ae08589eff783a58a29ece447b33760a`, tree `4c251997a135fba7f933fb4b57cde634191b8c1d`; build local, sin URL desplegada. El commit posterior solo registra este sobre de procedencia.
+- Fecha de auditoría y observación: 2026-08-27; snapshot efectivo desde `2026-08-27T10:53:03-05:00`; última prueba integrada registrada 2026-08-27T15:40:03Z.
 - Objetivo y autorización: medir y mejorar la alineación técnica con controles candidatos de UE/España mediante revisión pasiva y cambios locales reversibles. No se autorizó desplegar, indexar, publicar perfiles, activar contacto ni probar terceros.
 - Conclusión limitada: evaluación técnica de controles y riesgos; no es certificación, declaración de conformidad ni dictamen jurídico.
 - Decisión de release: **NO-GO**. El incremento local puede continuar, pero publicación, indexación, perfiles reales, formularios y claims comerciales permanecen cerrados.
@@ -131,6 +131,6 @@ El manifiesto técnico está en `audit.json` e incluye documentos restringidos, 
 ## Roadmap
 
 - Inmediato: conservar `noindex`, sitemap vacío, perfiles/contacto cerrados; resolver identidad, actividad/publicidad y formación contractual; clasificar U-07 (art. 9/EIPD art. 35) y U-08 (BOE/BOCM/DOGC/municipal); seleccionar visual y aportar derechos.
-- 30 días: cerrar privacidad, edad, derechos de imagen, cookies/tecnologías, textos legales, contenido y proveedores; auditar accesibilidad y completar SCA/alcanzabilidad del release congelado. Solo entonces registrar `checkpoint_sha`, `tree_sha` y `effective_at`.
+- 30 días: cerrar privacidad, edad, derechos de imagen, cookies/tecnologías, textos legales, contenido y proveedores; auditar accesibilidad y completar SCA/alcanzabilidad. Todo nuevo candidato deberá congelarse con su propio `checkpoint_sha`, `tree_sha` y `effective_at` y repetir los controles materiales.
 - 60–90 días: validar runtime desplegado, cabeceras, cookies, terceros, rendimiento, derechos y operación; retestar por cada cambio material.
 - Escalaciones humanas: abogado en España para actividad/publicidad/contratación; responsable de privacidad; revisión independiente de accesibilidad; aceptación visual y comercial del cliente.

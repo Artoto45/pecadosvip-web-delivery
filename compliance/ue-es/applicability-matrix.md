@@ -3,7 +3,7 @@
 ## Identificación
 
 - Activo/propietario: repositorio `pecadosvip-web-delivery`; responsable de aceptación indicado en la misión: Luis Araujo. El prestador legal del futuro sitio no está identificado.
-- Versión/entorno: commit base `485277e3236b6aa8f897b408f3f88ab4161b831f` más working tree auditado aún **no congelado**; repositorio local, sin URL desplegada. `checkpoint_sha`, `tree_sha` y `effective_at` se completan solo después del commit final.
+- Versión/entorno: snapshot auditado congelado en commit `1ab3cd66ae08589eff783a58a29ece447b33760a`, tree `4c251997a135fba7f933fb4b57cde634191b8c1d`, efectivo desde `2026-08-27T10:53:03-05:00`; repositorio local, sin URL desplegada. El commit posterior solo registra este sobre de procedencia.
 - Fecha efectiva: 2026-08-27.
 - Objetivo/autorización: auditoría pasiva del repositorio y de los insumos entregados, más mejoras locales reversibles. Sin despliegue, indexación, envío de formularios ni prueba activa contra terceros.
 - Límite: evaluación técnica de controles y riesgos; no es certificación ni dictamen jurídico.
