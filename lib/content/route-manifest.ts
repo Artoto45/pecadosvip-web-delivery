@@ -1,4 +1,10 @@
-import type { ContentSnapshot } from './types.ts';
+import { evaluateRelease } from './release-gates.ts';
+import type {
+  ApprovalRecord,
+  CityPage,
+  ContentSnapshot,
+  Profile,
+} from './types.ts';
 
 export type RouteEntry = {
   path: string;
@@ -6,6 +12,53 @@ export type RouteEntry = {
   indexable: boolean;
   lastModified?: string;
 };
+
+function hasApprovalEvidence(approval: ApprovalRecord): boolean {
+  return Boolean(
+    approval.state === 'approved' &&
+      approval.approvedBy?.trim() &&
+      approval.approvedAt?.trim() &&
+      approval.sourceReference?.trim(),
+  );
+}
+
+function isCityPublishable(city: CityPage): boolean {
+  return Boolean(
+    city.status === 'published' &&
+      city.seo.indexable &&
+      city.serviceConfirmed &&
+      hasApprovalEvidence(city.approval) &&
+      city.headline.trim() &&
+      city.introduction.trim() &&
+      city.differentiators.length > 0 &&
+      city.coverageAreas.length > 0 &&
+      city.coverageAreas.every((area) => area.confirmed) &&
+      city.faqs.length > 0,
+  );
+}
+
+function isProfilePublishable(profile: Profile): boolean {
+  return Boolean(
+    profile.status === 'published' &&
+      hasApprovalEvidence(profile.approval) &&
+      profile.age >= 18 &&
+      profile.adultAgeConfirmed &&
+      profile.publicationConsentConfirmed &&
+      profile.rightsConfirmed &&
+      profile.displayName.trim() &&
+      profile.biography.trim() &&
+      profile.languages.length > 0 &&
+      profile.serviceIds.length > 0 &&
+      profile.citySlugs.length > 0 &&
+      profile.media.length > 0 &&
+      profile.media.every(
+        (media) =>
+          media.alt.trim() &&
+          media.rightsConfirmed &&
+          media.rightsEvidence?.trim(),
+      ),
+  );
+}
 
 export function buildRouteManifest(snapshot: ContentSnapshot): RouteEntry[] {
   const routes: RouteEntry[] = [
@@ -15,7 +68,7 @@ export function buildRouteManifest(snapshot: ContentSnapshot): RouteEntry[] {
   ];
 
   for (const city of snapshot.cities) {
-    if (city.status === 'published') {
+    if (isCityPublishable(city)) {
       routes.push({
         path: `/${city.slug}`,
         kind: 'city',
@@ -26,7 +79,7 @@ export function buildRouteManifest(snapshot: ContentSnapshot): RouteEntry[] {
   }
 
   for (const profile of snapshot.profiles) {
-    if (profile.status === 'published') {
+    if (isProfilePublishable(profile)) {
       routes.push({
         path: `/perfiles/${profile.slug}`,
         kind: 'profile',
@@ -45,7 +98,7 @@ export function buildRouteManifest(snapshot: ContentSnapshot): RouteEntry[] {
 
   for (const [path, key] of legalRoutes) {
     const document = snapshot.settings.legal[key];
-    if (document.approval.state === 'approved' && document.body.trim()) {
+    if (hasApprovalEvidence(document.approval) && document.body.trim()) {
       routes.push({ path, kind: 'legal', indexable: true, lastModified: document.updatedAt });
     }
   }
@@ -54,5 +107,9 @@ export function buildRouteManifest(snapshot: ContentSnapshot): RouteEntry[] {
 }
 
 export function sitemapRoutes(snapshot: ContentSnapshot): RouteEntry[] {
+  if (!evaluateRelease(snapshot).ok) {
+    return [];
+  }
+
   return buildRouteManifest(snapshot).filter((route) => route.indexable);
 }

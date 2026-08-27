@@ -1,6 +1,6 @@
 # PROJECT CONTROL — PecadosVip Web
 
-Última actualización: 2026-08-26 22:00 America/Bogota
+Última actualización: 2026-08-26 23:41 America/Bogota
 Fecha límite dirigida por el usuario: 2026-08-29 22:00 America/Bogota
 Patrocinador y autoridad de aceptación: Luis Araujo
 Estado actual: **ALERTA ROJA / EJECUCIÓN CON BLOQUEOS EXTERNOS**
@@ -63,6 +63,7 @@ Las Focus Areas de Initiating, Planning, Executing, Monitoring and Controlling y
 - Base reutilizable: Next.js 16.2.6, React 19.2.6, Vinext 1.0.0-beta.3, Vite 8.0.13 y pnpm 11.19.0.
 - Repositorio original preservado: `pecadosvip-web`, commit `013307a`.
 - Repositorio de integración aislado: `pecadosvip-web-delivery`.
+- Checkpoint remoto privado: `Artoto45/pecadosvip-web-delivery`, PR borrador #1, rama `codex/pagina-web-checkpoint`.
 - Copia fuera de OneDrive: `C:\Users\artot\AppData\Local\CodexWork\Pagina_Web-20260826-2111`.
 - Faltan: proveedor CMS/DB/objetos, credenciales, dominio confirmado, contenido real, activos licenciados y aprobación visual.
 
@@ -83,7 +84,7 @@ Estimación para una entrega de producción completa con la evidencia disponible
 - SEO local, legal, contenido y configuración externa: 20–40 h más dependencias humanas.
 - QA, correcciones, release y handoff: 20–30 h.
 
-Total: 130–215 h. Capacidad calendario restante a las 22:00 del 26/08: 72 h; reserva final del 20 %: 14,4 h; capacidad útil antes del gate final: 57,6 h. Brecha: 72–157 h, además de decisiones y materiales externos. El alcance obligatorio no cabe con calidad de producción sin aumentar capacidad, ampliar fecha o aceptar excepciones explícitas.
+Total de línea base: 130–215 h. A las 23:41 del 26/08 quedan 70,31 h calendario; la reserva final del 20 % equivale a 14,06 h y deja 56,25 h antes del gate final. La alerta roja permanece: contratos y pruebas reducen riesgo, pero las dependencias humanas y el trabajo de frontend, CMS, contenido, legal y QA todavía exceden la capacidad disponible sin aumentar recursos, ampliar fecha o aceptar excepciones explícitas.
 
 ## Cronograma hacia atrás
 
@@ -124,13 +125,13 @@ Ruta crítica: selección visual → activos/contenido → incremento público �
 ## Estado por dominio
 
 - Governance: autoridad y gates definidos; aprobación visual/comercial pendiente.
-- Scope: 20 requisitos normalizados; CMS e infraestructura tienen decisiones abiertas.
+- Scope: 20 requisitos normalizados; REQ-010 y REQ-011 están verificados en contrato; REQ-008 y REQ-020 están parciales; CMS e infraestructura conservan decisiones abiertas.
 - Schedule: alerta roja activa; reserva final protegida.
 - Finance: cero gasto nuevo; 600 EUR no confirmado como alcance cerrado.
 - Stakeholders: roles principales identificados; datos de responsables externos pendientes.
-- Resources: stack y clon verificados; contenido, activos y servicios externos faltantes.
+- Resources: stack, clon, remoto privado y 11 pruebas de contrato verificados; contenido, activos y servicios externos faltantes.
 - Risk: exposición global alta por alcance/tiempo, legal, contenido y diseño no aprobado.
 
 ## Próximo hito
 
-Completar el incremento vertical público utilizando, si Luis lo confirma, la propuesta 5:38:50 como portada y la 5:19:36 como referencia de listado y perfil; mantener persistencia y publicación detrás de gates explícitos.
+Integrar las puertas de publicación con SEO seguro por defecto y completar la arquitectura no visual. El incremento visual sigue pendiente de la decisión material: propuesta 5:38:50 como portada y 5:19:36 como referencia de listado y perfil.
