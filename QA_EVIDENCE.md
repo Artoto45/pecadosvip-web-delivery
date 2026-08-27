@@ -1,6 +1,6 @@
 # QA EVIDENCE — PecadosVip Web
 
-Última actualización: 2026-08-27 02:38 America/Bogota.
+Última actualización: 2026-08-27 03:08 America/Bogota.
 
 ## Baseline del repositorio reutilizado
 
@@ -10,8 +10,10 @@
 | Dependencias versionadas | PASS | `pnpm-lock.yaml`; instalación limpia completada en clon aislado |
 | Lint | PASS | `pnpm run lint`; salida sin errores |
 | Typecheck | PASS | `pnpm run typecheck`; TypeScript sin errores |
-| Contratos de contenido, repositorio local, consulta pública, release y SEO seguro | PASS | `pnpm run test`; 36/36 pruebas pasan: perfiles, estados, roles runtime, referencias agregadas, evidencia, concurrencia optimista, auditoría, medios, parser URL, filtros/paginación, proyección pública y configuración SEO |
+| Contratos de contenido, repositorio local, consulta pública, analítica, release y SEO seguro | PASS | `pnpm run test`; 46/46 pruebas pasan: perfiles, estados, roles runtime, referencias agregadas, evidencia, concurrencia optimista, auditoría, medios, parser URL, filtros/paginación, proyección pública, analítica y configuración SEO |
 | Consulta pública de perfiles | PASS WITH LIMITS | Parser URL rechaza claves desconocidas, duplicados y enteros ambiguos; la consulta falla cerrada si el release no está listo, excluye ocultos y omite IDs, aprobaciones, evidencia y metadatos de derechos. Faltan route handler, UI y E2E |
+| Contrato de analítica | PASS WITH LIMITS | Deshabilitado sin gate y consentimiento `granted`; acepta solo eventos/propiedades allowlist, snapshottea entradas de una sola lectura, omite identidad de perfil y rechaza payload/PII, getters mutables y proxies hostiles. Falta CMP, proveedor, captura de red y revisión legal |
+| Revisión independiente de analítica/investigación | PASS WITH LIMITS | Dos P1 de getters TOCTOU y consentimiento heredado se corrigieron antes del commit; retest de getters, Proxy y prototype pollution sin P0/P1 restantes. Revisión estática más suite; sin `scanId` durable por la limitación registrada del escáner integrado |
 | Revisión independiente de consulta pública | PASS WITH LIMITS | Auditor focal corrigió un P1 antes del commit y revalidó parser, consulta, proyección, release gate y arquitectura sin P0/P1 restantes; revisión estática más suite, sin `scanId` durable por limitación ya registrada del escáner integrado |
 | CMS local de dominio | PASS WITH LIMITS | CRUD lógico de perfiles, duplicado seguro, archivo/restauración, disponibilidad, orden de medios y bitácora validados en memoria; sin UI, autenticación, persistencia ni almacenamiento |
 | Build de producción | PASS | `pnpm run build`; `dist/client`, `dist/server/index.js` y `dist/.openai/hosting.json` presentes |

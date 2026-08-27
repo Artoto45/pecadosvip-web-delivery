@@ -61,7 +61,7 @@ El manifiesto contractual contiene home, ciudades, perfiles, contacto y legales.
 | `Clock` | Repositorio → tiempo | Función inyectable | Reloj de infraestructura |
 | `MediaStorage` | CMS → fotos y videos | Modelo, derechos y orden | Upload, storage, variantes y CDN |
 | `ContactDestination` | Navegador → canal | Variables vacías y validación de esquema | URLs y endpoint aprobados |
-| `AnalyticsConsent` | Navegador → analítica | Gate contractual | CMP y analítica aprobadas |
+| `AnalyticsConsent` | Navegador → analítica | Gate y allowlist runtime de eventos/propiedades | CMP, proveedor y configuración aprobados |
 | `SearchPublication` | Sitio → crawlers | SEO fail-closed | Dominio, contenido e indexación aprobados |
 | `ReleaseDeployment` | Build → hosting | Build local y PR borrador | Hosting y despliegue autorizados |
 
@@ -87,6 +87,7 @@ Implementado y verificado localmente:
 - Revisión optimista, protección contra replay y auditoría local.
 - Validación agregada y publicación fail-closed.
 - Consulta pública de perfiles con parser URL fail-closed, filtros, paginación, detalle y proyección sin metadatos internos.
+- Contrato de eventos de analítica deshabilitado sin consentimiento y sin propiedades personales.
 - SEO cerrado por defecto.
 - Pruebas de contrato y build local.
 
@@ -99,6 +100,8 @@ Parcial o bloqueado:
 - Cobertura y keywords, dominio, canales, analítica y textos legales.
 - Diseño aprobado, QA visual/E2E, accesibilidad y UAT.
 - Merge, hosting y despliegue.
+
+La clasificación de rutas y los límites de la referencia competitiva se detallan en `REFERENCE_RESEARCH.md`; la medición condicionada a consentimiento se define en `MEASUREMENT_SPEC.md`.
 
 ## Criterios de integración
 
