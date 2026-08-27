@@ -13,10 +13,11 @@ Este repositorio conserva la base pública existente de Madrid y Barcelona y añ
 - Repositorio CMS local en memoria con revisión optimista, protección contra repetición, disponibilidad, orden multimedia y bitácora sin contenido personal de perfiles.
 - Validación de mayoría de edad, consentimiento, derechos de uso, contenido local, cobertura y requisitos de release.
 - Manifiesto de rutas que excluye registros no publicables.
+- Consulta pública de perfiles con parser URL estricto, filtros, paginación y detalle proyectado sin IDs internos ni referencias de evidencia.
 - SEO cerrado por defecto hasta confirmar dominio, indexación y contenido.
 - Artefactos de gobierno, trazabilidad, riesgos, QA y handoff provisional.
 
-Todavía no están implementados el flujo público completo de perfiles, el CMS operativo, autenticación, persistencia, almacenamiento multimedia, legales aprobados, canales reales, ciudades restantes ni QA visual/E2E.
+Todavía no están implementadas las rutas y la interfaz del flujo público de perfiles, el CMS operativo, autenticación, persistencia, almacenamiento multimedia, legales aprobados, canales reales, ciudades restantes ni QA visual/E2E.
 
 ## Requisitos locales
 
@@ -96,6 +97,7 @@ La bitácora conserva identificadores operativos opacos de actor y solicitud, no
 
 ## Gobierno y evidencia
 
+- `ARCHITECTURE.md`: límites, mapa URL, puertos, fronteras de confianza y criterios de integración.
 - `PROJECT_CONTROL.md`: estado, gobierno, alcance, cronograma y pronóstico.
 - `INPUT_MANIFEST.csv`: inventario y hashes de las fuentes analizadas.
 - `REQUIREMENTS_TRACEABILITY.csv`: requisito → implementación → prueba → evidencia.

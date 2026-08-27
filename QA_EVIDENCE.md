@@ -1,6 +1,6 @@
 # QA EVIDENCE — PecadosVip Web
 
-Última actualización: 2026-08-27 02:13 America/Bogota.
+Última actualización: 2026-08-27 02:38 America/Bogota.
 
 ## Baseline del repositorio reutilizado
 
@@ -10,7 +10,9 @@
 | Dependencias versionadas | PASS | `pnpm-lock.yaml`; instalación limpia completada en clon aislado |
 | Lint | PASS | `pnpm run lint`; salida sin errores |
 | Typecheck | PASS | `pnpm run typecheck`; TypeScript sin errores |
-| Contratos de contenido, repositorio local, release y SEO seguro | PASS | `pnpm run test`; 28/28 pruebas pasan: perfiles, estados, roles runtime, referencias agregadas, evidencia, concurrencia optimista, auditoría, medios y configuración SEO |
+| Contratos de contenido, repositorio local, consulta pública, release y SEO seguro | PASS | `pnpm run test`; 36/36 pruebas pasan: perfiles, estados, roles runtime, referencias agregadas, evidencia, concurrencia optimista, auditoría, medios, parser URL, filtros/paginación, proyección pública y configuración SEO |
+| Consulta pública de perfiles | PASS WITH LIMITS | Parser URL rechaza claves desconocidas, duplicados y enteros ambiguos; la consulta falla cerrada si el release no está listo, excluye ocultos y omite IDs, aprobaciones, evidencia y metadatos de derechos. Faltan route handler, UI y E2E |
+| Revisión independiente de consulta pública | PASS WITH LIMITS | Auditor focal corrigió un P1 antes del commit y revalidó parser, consulta, proyección, release gate y arquitectura sin P0/P1 restantes; revisión estática más suite, sin `scanId` durable por limitación ya registrada del escáner integrado |
 | CMS local de dominio | PASS WITH LIMITS | CRUD lógico de perfiles, duplicado seguro, archivo/restauración, disponibilidad, orden de medios y bitácora validados en memoria; sin UI, autenticación, persistencia ni almacenamiento |
 | Build de producción | PASS | `pnpm run build`; `dist/client`, `dist/server/index.js` y `dist/.openai/hosting.json` presentes |
 | Smoke HTTP SEO cerrado | PASS | build servido en `127.0.0.1:4174`: `robots.txt` disallow-all, sitemap con 0 URLs, Madrid/Barcelona 200 con noindex y sin canonical/JSON-LD; servidor detenido después |
@@ -19,7 +21,7 @@
 | QA visual contra mockup | NOT RUN | bloqueada por falta de selección/aprobación visual |
 | Pruebas E2E y navegador | NOT RUN | se ejecutarán tras el primer incremento integrado y autorización de navegador |
 | Accesibilidad | NOT RUN | pendiente del incremento integrado |
-| Búsqueda de secretos de alta confianza | PASS | cero coincidencias en archivos candidatos al commit; no sustituye auditoría completa |
+| Búsqueda de secretos de alta confianza | PASS | sin secretos observados; la única coincidencia es la URL deliberadamente insegura y sintética `user:password` de una prueba negativa en `tests/seo-safety.test.ts`; no sustituye auditoría completa |
 | Escáner de seguridad integrado | BLOCKED | el escaneo estándar falló en un sourcemap de `node_modules` y el escaneo diff no resolvió el worktree; repetir antes de release |
 | Dependencias vulnerables | NOT RUN | pendiente de análisis compatible y evaluación de explotabilidad |
 | Smoke desde release final | NOT RUN | aún no existe release congelado |

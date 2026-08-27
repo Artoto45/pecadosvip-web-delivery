@@ -13,7 +13,8 @@ Existe un checkpoint privado no operacional con gobierno, contratos de contenido
 - Repositorio privado y PR borrador recuperables sin alterar `main`.
 - Publicación e indexación bloqueadas por defecto.
 - Contrato de perfiles con roles runtime, revisiones optimistas, protección contra repetición, archivo/restauración, disponibilidad, orden de medios y auditoría.
-- 28 pruebas de contrato, lint, typecheck y build aprobados en el clon de integración.
+- Arquitectura, mapa URL y contrato de consulta pública documentados sin suponer proveedores ni contenido.
+- 36 pruebas de contrato, lint, typecheck y build aprobados en el clon de integración.
 
 ## Ruta de entrega
 

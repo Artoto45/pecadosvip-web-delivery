@@ -1,6 +1,6 @@
 # PROJECT CONTROL — PecadosVip Web
 
-Última actualización: 2026-08-27 02:13 America/Bogota
+Última actualización: 2026-08-27 02:38 America/Bogota
 Fecha límite dirigida por el usuario: 2026-08-29 22:00 America/Bogota
 Patrocinador y autoridad de aceptación: Luis Araujo
 Estado actual: **ALERTA ROJA / EJECUCIÓN CON BLOQUEOS EXTERNOS**
@@ -129,9 +129,9 @@ Ruta crítica: selección visual → activos/contenido → incremento público �
 - Schedule: alerta roja activa; reserva final protegida.
 - Finance: cero gasto nuevo; 600 EUR no confirmado como alcance cerrado.
 - Stakeholders: roles principales identificados; datos de responsables externos pendientes.
-- Resources: stack, clon, remoto privado y 28 pruebas de contrato verificadas; contenido, activos y servicios externos faltantes.
+- Resources: stack, clon, remoto privado y 36 pruebas de contrato verificadas; contenido, activos y servicios externos faltantes.
 - Risk: exposición global alta por alcance/tiempo, legal, contenido y diseño no aprobado.
 
 ## Próximo hito
 
-El contrato CMS local y las puertas SEO seguras están integrados. El siguiente incremento no visual es completar arquitectura de rutas y adaptadores sin contenido personal; el incremento visual sigue pendiente de la decisión material: propuesta 5:38:50 como portada y 5:19:36 como referencia de listado y perfil.
+La arquitectura, el contrato CMS local, las puertas SEO seguras y la consulta pública fail-closed —incluido el parser URL— están integrados. El siguiente incremento no visual es conectar un route handler y una fuente persistente seguros sin inventar contenido personal; el incremento visual sigue pendiente de la decisión material: propuesta 5:38:50 como portada y 5:19:36 como referencia de listado y perfil.
