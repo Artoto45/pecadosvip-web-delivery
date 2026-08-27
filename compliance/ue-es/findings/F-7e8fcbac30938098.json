@@ -1,0 +1,107 @@
+{
+  "finding_id": "F-7e8fcbac30938098",
+  "audit_id": "A-PECADOSVIP-20260827",
+  "asset": "pecadosvip-web-delivery",
+  "environment": "local repository snapshot; no deployed URL",
+  "release": null,
+  "logical_location": "public routes and responsive layout",
+  "url_or_path": "app/",
+  "line": null,
+  "role": "anonymous visitor using keyboard or pointer",
+  "locale": "es-ES",
+  "browser": "Chromium through Playwright CLI",
+  "viewport": "360, 390, 768, 1024, 1440 and 1920 CSS px",
+  "observed_at": "2026-08-27T14:50:00Z",
+  "domain": "accessibility",
+  "control_id": "A11Y-WCAG22-BASELINE-001",
+  "control_version": "1.0.0",
+  "applicability_status": "APPLICABLE",
+  "applicability_reason": "WCAG 2.2 AA is an explicit voluntary engineering baseline for the project; statutory private-service accessibility remains separately uncertain.",
+  "expected": "Critical public flows meet an evidenced WCAG 2.2 level A/AA baseline across keyboard access, semantics, focus, reflow, contrast, names and roles, and representative assistive technologies.",
+  "observed": "The underlying draft UI, captured before the final production visibility boundary, had a working skip link with transferred focus, one H1 on the tested home page, no horizontal overflow at six widths, zero POST forms and clean critical navigation console output after regression fixes. The final blocked production build exposes only a neutral holding page. A complete screen-reader, contrast, zoom/reflow and target-size audit was not run.",
+  "method": "Chromium/Playwright checks and responsive captures of the underlying draft UI before the final holding boundary, followed by static review and a final production HTTP holding-state smoke.",
+  "preconditions": [
+    "The local production build was served only on 127.0.0.1 during the test and stopped afterward.",
+    "No real profiles, legal text, contact destination or third-party resource was enabled."
+  ],
+  "limitations": [
+    "No screen reader or speech-recognition technology was exercised.",
+    "No complete contrast, 200 percent zoom, 400 percent reflow, motion or pointer target-size audit was executed.",
+    "Visual fidelity was excluded because the client has not selected the controlling mockup.",
+    "The draft UI browser evidence predates the final visibility boundary and is not a browser retest of the final development-preview path.",
+    "Local observations do not prove deployed behaviour."
+  ],
+  "tool_status": "SUCCEEDED",
+  "tool_error": null,
+  "result": "PARTIAL",
+  "evidence": [
+    {
+      "kind": "TEST",
+      "path_or_url": "output/playwright/qa-results.json",
+      "sha256": "0b80738672124dc50ce2d524a74b5635f3a48a5585b5ee4e6573362b8db188d2",
+      "redacted": false,
+      "access": "INTERNAL",
+      "captured_at": "2026-08-27T14:50:00Z"
+    },
+    {
+      "kind": "SCREENSHOT",
+      "path_or_url": "output/playwright/home-390.png",
+      "sha256": "d709aa0102fb5cbc485d9d9f2164b41714675bdaf7407d73c6e49059ce7fce47",
+      "redacted": false,
+      "access": "INTERNAL",
+      "captured_at": "2026-08-27T14:50:00Z"
+    },
+    {
+      "kind": "SCREENSHOT",
+      "path_or_url": "output/playwright/home-1440.png",
+      "sha256": "aff631d3e92b6abc21f02a51f029bfd7c029f9f62e1406670403ce85c6e34427",
+      "redacted": false,
+      "access": "INTERNAL",
+      "captured_at": "2026-08-27T14:50:00Z"
+    },
+    {
+      "kind": "TEST",
+      "path_or_url": "output/playwright/responsive-smoke.js",
+      "sha256": "9d7081308eace02b72bf4b34ae88182f5dc6b1cb1e9e7fc7f731acba9909c39b",
+      "redacted": false,
+      "access": "INTERNAL",
+      "captured_at": "2026-08-27T14:50:00Z"
+    }
+  ],
+  "impact": "Untested accessibility criteria could still prevent some people from understanding or operating the final service even though the tested keyboard and responsive baseline improved.",
+  "prevalence": "All public routes, final content, interactive controls and future media.",
+  "reproducibility": "REPRODUCED_TWICE",
+  "technical_severity": "MEDIUM",
+  "confidence": "HIGH",
+  "priority": "P1 before release",
+  "legal_relevance": "NONE_IDENTIFIED",
+  "source_refs": [
+    {
+      "class": "VOLUNTARY_STANDARD",
+      "legal_effect": "Voluntary engineering baseline; it is not presented as binding law or as a universal presumption of conformity.",
+      "instrument_id": "W3C-WCAG-2.2",
+      "instrument": "Web Content Accessibility Guidelines (WCAG) 2.2",
+      "identifier": "W3C Recommendation 05 October 2023",
+      "provision": "levels A and AA",
+      "version": "W3C Recommendation 2023-10-05",
+      "effective_as_of": "2026-08-27",
+      "official_url": "https://www.w3.org/TR/WCAG22/",
+      "applicability_reason": "The project requirements adopt WCAG 2.2 AA as a quality baseline regardless of unresolved statutory scope.",
+      "verified_at": "2026-08-27",
+      "verification_method": "Official W3C Recommendation URL and project audit register."
+    }
+  ],
+  "review_status": "REQUIRES_HUMAN_REVIEW",
+  "false_positive_analysis": "Passing the tested keyboard and layout checks is counterevidence to a blanket accessibility failure, but it cannot establish full WCAG conformance.",
+  "counterevidence": [
+    "Skip-link activation transfers focus to the main landmark.",
+    "The tested home page has one H1 and no horizontal overflow at all six widths.",
+    "Critical navigation completed with no console errors or warnings."
+  ],
+  "remediation_minimum": "Run a criterion-based WCAG 2.2 A/AA audit on the frozen release, including keyboard, focus, accessible names, errors, contrast, zoom/reflow, target size and representative screen-reader flows; remediate and retest every nonconformance.",
+  "additional_hardening": "Add automated accessibility smoke checks to CI and maintain a manual assistive-technology matrix for each release.",
+  "suggested_owner": "Frontend engineering and an independent accessibility reviewer",
+  "effort": "Medium after content and visual target are frozen",
+  "retest": "Repeat the same six widths plus keyboard and representative screen-reader scenarios on the versioned release artifact.",
+  "residual_risk": "NO-GO for accessibility acceptance until the untested criteria and assistive-technology coverage are completed."
+}

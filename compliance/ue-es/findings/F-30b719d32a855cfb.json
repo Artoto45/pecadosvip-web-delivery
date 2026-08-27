@@ -1,0 +1,63 @@
+{
+  "finding_id": "F-30b719d32a855cfb",
+  "audit_id": "A-PECADOSVIP-20260827",
+  "asset": "pecadosvip-web-delivery",
+  "environment": "local repository snapshot; no deployed URL",
+  "release": null,
+  "logical_location": "dependency reachability and security scan",
+  "url_or_path": "pnpm-lock.yaml",
+  "line": null,
+  "role": "release engineer",
+  "locale": "es-ES",
+  "browser": null,
+  "viewport": null,
+  "observed_at": "2026-08-27T15:20:00Z",
+  "domain": "software supply chain security",
+  "control_id": "SEC-SCA-REACHABILITY-001",
+  "control_version": "1.0.0",
+  "applicability_status": "APPLICABLE",
+  "applicability_reason": "The application has a versioned JavaScript dependency graph that must be evaluated before a release claim.",
+  "expected": "A compatible dependency and reachability scan completes on the frozen lockfile and build, triages material findings and records reproducible evidence.",
+  "observed": "The previous integrated scan failed on a nested dependency sourcemap and the diff scan did not resolve the worktree. No durable scan identifier or reachability conclusion exists.",
+  "method": "Review of the versioned lockfile and recorded scanner failure; no substitute success was inferred.",
+  "preconditions": [
+    "The lockfile exists and local validation passes."
+  ],
+  "limitations": [
+    "No compatible SCA result or exploitability analysis was produced."
+  ],
+  "tool_status": "FAILED",
+  "tool_error": "Integrated scanner failed on a nested dependency sourcemap; diff scan could not resolve the worktree.",
+  "result": "NOT_TESTED",
+  "not_tested_reason": "Tool failure left dependency vulnerability and reachability controls unexecuted for this snapshot.",
+  "evidence": [
+    {
+      "kind": "SBOM",
+      "path_or_url": "pnpm-lock.yaml",
+      "sha256": "d56ba4e4e9e013cb039c8c41907015af13d133a753028281f09252421a8f5ea9",
+      "redacted": false,
+      "access": "INTERNAL",
+      "captured_at": "2026-08-27T15:20:00Z"
+    }
+  ],
+  "impact": "A vulnerable reachable dependency could remain undetected despite passing functional tests and build.",
+  "prevalence": "The complete production dependency graph and generated bundles.",
+  "reproducibility": "REPRODUCED_ONCE",
+  "technical_severity": "MEDIUM",
+  "confidence": "HIGH",
+  "priority": "P1 before release",
+  "legal_relevance": "NONE_IDENTIFIED",
+  "source_refs": [],
+  "review_status": "REQUIRES_HUMAN_REVIEW",
+  "false_positive_analysis": "This finding states absence of a successful test, not that a vulnerability exists.",
+  "counterevidence": [
+    "The lockfile is versioned.",
+    "Lint, typecheck, unit tests and build pass, but they do not replace SCA."
+  ],
+  "remediation_minimum": "Run a compatible SCA/SBOM and reachability workflow on the frozen commit, triage all material findings and retain the scan identity and configuration.",
+  "additional_hardening": "Add recurring dependency review and an explicit exception process with expiry and retest conditions.",
+  "suggested_owner": "Release engineering and security reviewer",
+  "effort": "Low to medium if a compatible scanner is available",
+  "retest": "Repeat on the final commit and production build; verify tool completion and triage evidence.",
+  "residual_risk": "Release remains NO-GO for security acceptance until a compatible scan and reachability review complete."
+}

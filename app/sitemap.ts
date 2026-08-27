@@ -1,19 +1,20 @@
 import type { MetadataRoute } from 'next';
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.pecadosvip.com';
+import {
+  getRuntimePublicationState,
+  getRuntimeSitemapRoutes,
+} from '../lib/content/runtime-publication';
+import { siteConfig } from '../lib/site-config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
-    {
-      url: `${siteUrl}/madrid`,
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${siteUrl}/barcelona`,
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-  ];
+  const { release } = getRuntimePublicationState();
+  if (!siteConfig.indexingEnabled || !siteConfig.origin || !release.ok) {
+    return [];
+  }
+
+  return getRuntimeSitemapRoutes().map((route) => ({
+    url: new URL(route.path, siteConfig.origin).toString(),
+    lastModified: route.lastModified,
+    changeFrequency: route.kind === 'profile' ? 'daily' : 'weekly',
+    priority: route.kind === 'home' ? 1 : 0.8,
+  }));
 }
