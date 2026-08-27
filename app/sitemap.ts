@@ -1,17 +1,19 @@
 import type { MetadataRoute } from 'next';
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.pecadosvip.com';
+import { siteConfig } from '../lib/site-config';
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  if (!siteConfig.indexingEnabled || !siteConfig.origin) {
+    return [];
+  }
+
   return [
     {
-      url: `${siteUrl}/madrid`,
+      url: `${siteConfig.origin}/madrid`,
       changeFrequency: 'weekly',
       priority: 1,
     },
     {
-      url: `${siteUrl}/barcelona`,
+      url: `${siteConfig.origin}/barcelona`,
       changeFrequency: 'weekly',
       priority: 1,
     },

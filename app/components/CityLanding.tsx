@@ -1,13 +1,11 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { siteConfig } from '../../lib/site-config';
 import type { CityContent } from '../city-data';
 
 type CityLandingProps = {
   content: CityContent;
 };
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.pecadosvip.com';
 
 function safeJsonLd(data: unknown) {
   return JSON.stringify(data).replace(/</g, '\\u003c');
@@ -18,13 +16,16 @@ export default function CityLanding({ content }: CityLandingProps) {
   const otherCity = isMadrid
     ? { label: 'Barcelona', href: '/barcelona' }
     : { label: 'Madrid', href: '/madrid' };
-  const pageUrl = `${siteUrl}/${content.slug}`;
+  const siteUrl = siteConfig.origin;
+  const pageUrl = siteUrl ? `${siteUrl}/${content.slug}` : undefined;
   const formAction = process.env.NEXT_PUBLIC_CONTACT_FORM_ACTION;
   const whatsappUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL || '#solicitud';
   const telegramUrl = process.env.NEXT_PUBLIC_TELEGRAM_URL || '#solicitud';
   const phoneUrl = process.env.NEXT_PUBLIC_PHONE_URL || '#solicitud';
 
-  const structuredData = [
+  const structuredData =
+    siteConfig.structuredDataEnabled && siteUrl && pageUrl
+      ? [
     {
       '@context': 'https://schema.org',
       '@type': 'Organization',
@@ -78,14 +79,17 @@ export default function CityLanding({ content }: CityLandingProps) {
         },
       })),
     },
-  ];
+        ]
+      : null;
 
   return (
     <main className={`city-page city-${content.slug}`}>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }}
-      />
+      {structuredData ? (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: safeJsonLd(structuredData) }}
+        />
+      ) : null}
 
       <header className="site-header">
         <Link

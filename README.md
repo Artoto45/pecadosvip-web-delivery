@@ -1,0 +1,107 @@
+# PecadosVip Web
+
+> Estado actual: **trabajo en curso, no operacional y no autorizado para despliegue**.
+
+Este repositorio conserva la base pública existente de Madrid y Barcelona y añade el control de proyecto, los contratos de contenido y las puertas de publicación necesarias para continuar el producto de forma segura. Un build correcto no significa que el alcance, el contenido, la conformidad legal o la aceptación del cliente estén completos.
+
+## Alcance implementado
+
+- Páginas heredadas: `/`, `/madrid` y `/barcelona`.
+- Contratos tipados para ciudades, perfiles, servicios, medios, aprobaciones, contacto y documentos legales.
+- Estados `draft`, `hidden`, `published` y `archived`.
+- Roles de contrato `admin` y `editor`, duplicado seguro, archivo y restauración.
+- Validación de mayoría de edad, consentimiento, derechos de uso, contenido local, cobertura y requisitos de release.
+- Manifiesto de rutas que excluye registros no publicables.
+- SEO cerrado por defecto hasta confirmar dominio, indexación y contenido.
+- Artefactos de gobierno, trazabilidad, riesgos, QA y handoff provisional.
+
+Todavía no están implementados el flujo público completo de perfiles, el CMS operativo, autenticación, persistencia, almacenamiento multimedia, legales aprobados, canales reales, ciudades restantes ni QA visual/E2E.
+
+## Requisitos locales
+
+- Node.js `>=22.13.0`.
+- pnpm `11.19.0`.
+
+## Instalación reproducible
+
+```powershell
+pnpm install --frozen-lockfile
+```
+
+No se requieren servicios externos para lint, tipos, pruebas de contratos o build.
+
+## Configuración
+
+Copia `.env.example` a `.env.local` únicamente en tu entorno. No confirmes `.env.local` ni valores sensibles en Git.
+
+La publicación SEO permanece deshabilitada salvo que se cumplan simultáneamente estas condiciones:
+
+```dotenv
+NEXT_PUBLIC_SITE_URL=https://dominio-confirmado.example
+NEXT_PUBLIC_ALLOW_INDEXING=true
+NEXT_PUBLIC_CONTENT_APPROVED=true
+```
+
+`NEXT_PUBLIC_SITE_URL` debe ser un origen HTTPS real, sin ruta, usuario, contraseña, query ni fragmento. Los dominios locales o reservados son rechazados. Las dos banderas no sustituyen la validación de contenido ni la aceptación formal.
+
+Los canales permanecen vacíos hasta recibir destinos aprobados:
+
+```dotenv
+NEXT_PUBLIC_CONTACT_FORM_ACTION=
+NEXT_PUBLIC_WHATSAPP_URL=
+NEXT_PUBLIC_TELEGRAM_URL=
+NEXT_PUBLIC_PHONE_URL=
+```
+
+## Desarrollo y validación
+
+```powershell
+pnpm run dev
+pnpm run lint
+pnpm run typecheck
+pnpm run test
+pnpm run build
+pnpm run start
+```
+
+Puerta local completa:
+
+```powershell
+pnpm run validate
+```
+
+El build de producción queda en `dist/`. Antes de afirmar que existe un release deben ejecutarse además la revisión de navegador, accesibilidad, seguridad compatible, rendimiento y smoke desde la carpeta versionada de entrega.
+
+## Comportamiento seguro por defecto
+
+Sin configuración aprobada:
+
+- `robots.txt` responde `Disallow: /`.
+- `sitemap.xml` no contiene URLs.
+- Madrid y Barcelona emiten `noindex, nofollow`.
+- No se emiten canonicales ni JSON-LD con un dominio supuesto.
+- Formularios y canales externos permanecen deshabilitados.
+- Registros `draft`, `hidden`, `archived` o sin evidencia no entran al manifiesto público.
+
+## Datos y contenidos
+
+Los registros sintéticos viven únicamente en `tests/` y no son importados por la aplicación. No hay perfiles reales ni medios personales en este repositorio. La carga pública exige evidencia trazable de mayoría de edad, consentimiento, derechos de uso y aprobación de contenido.
+
+## Gobierno y evidencia
+
+- `PROJECT_CONTROL.md`: estado, gobierno, alcance, cronograma y pronóstico.
+- `INPUT_MANIFEST.csv`: inventario y hashes de las fuentes analizadas.
+- `REQUIREMENTS_TRACEABILITY.csv`: requisito → implementación → prueba → evidencia.
+- `CONTROL_LOG.csv`: riesgos, issues, decisiones, contradicciones y cambios.
+- `QA_EVIDENCE.md`: resultados observados y controles pendientes.
+- `HANDOFF_CLOSEOUT.md`: handoff provisional; no representa cierre.
+
+## GitHub y recuperación
+
+El trabajo continúa en `codex/pagina-web-checkpoint` mediante un PR en borrador. `main` conserva el baseline heredado `013307a`.
+
+Para recuperar el baseline sin destruir este checkout, crea un clon nuevo del repositorio y selecciona `main`. No uses `reset --hard`, `clean` ni restauraciones destructivas sobre una copia con trabajo no confirmado.
+
+## Publicación y operación
+
+No hay autorización para merge, hosting ni despliegue. Antes de producción se necesitan, como mínimo, aprobación visual, contenido real, evidencia legal y de derechos, dominio, canales, proveedor de autenticación/base de datos/almacenamiento, analítica con consentimiento y aceptación formal de Luis Araujo.

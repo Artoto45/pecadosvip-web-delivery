@@ -1,14 +1,22 @@
 import type { MetadataRoute } from 'next';
-
-const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.pecadosvip.com';
+import { siteConfig } from '../lib/site-config';
 
 export default function robots(): MetadataRoute.Robots {
+  if (!siteConfig.indexingEnabled || !siteConfig.origin) {
+    return {
+      rules: {
+        userAgent: '*',
+        disallow: '/',
+      },
+    };
+  }
+
   return {
     rules: {
       userAgent: '*',
       allow: '/',
+      disallow: ['/admin/', '/api/', '/preview/'],
     },
-    sitemap: `${siteUrl}/sitemap.xml`,
+    sitemap: `${siteConfig.origin}/sitemap.xml`,
   };
 }

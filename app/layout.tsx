@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
+import { siteConfig } from '../lib/site-config';
 import './globals.css';
 import './theme.css';
 
+const socialImageUrl = siteConfig.origin
+  ? new URL('/og.png', siteConfig.origin).toString()
+  : undefined;
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.pecadosvip.com',
-  ),
+  ...(siteConfig.origin ? { metadataBase: new URL(siteConfig.origin) } : {}),
   title: {
     default: 'PecadosVip | Compañía privada en Madrid y Barcelona',
     template: '%s | PecadosVip',
@@ -26,22 +29,28 @@ export const metadata: Metadata = {
     siteName: 'PecadosVip',
     locale: 'es_ES',
     type: 'website',
-    images: [
-      {
-        url: '/og.png',
-        width: 1200,
-        height: 630,
-        alt: 'PecadosVip Madrid y Barcelona',
-      },
-    ],
+    ...(socialImageUrl
+      ? {
+          images: [
+            {
+              url: socialImageUrl,
+              width: 1200,
+              height: 630,
+              alt: 'PecadosVip Madrid y Barcelona',
+            },
+          ],
+        }
+      : {}),
   },
   twitter: {
     card: 'summary_large_image',
     title: 'PecadosVip | Madrid · Barcelona',
     description: 'Privacidad. Presencia. Distinción.',
-    images: ['/og.png'],
+    ...(socialImageUrl ? { images: [socialImageUrl] } : {}),
   },
-  robots: { index: true, follow: true },
+  robots: siteConfig.indexingEnabled
+    ? { index: true, follow: true }
+    : { index: false, follow: false },
 };
 
 export default function RootLayout({
